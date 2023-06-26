@@ -24,16 +24,23 @@ public class User extends BaseTimeEntity {
     @Column(length = 100)
     private String password;
 
-    @Column(nullable = false, length = 50, unique = true)
-    private String email;
+    //@Column(nullable = false, length = 50, unique = true)
+    //private String email;
+
+    @Column(nullable = false, length = 30, unique = false)
+    private String address1;
+
+    @Column(nullable = false, length = 30, unique = false)
+    private String address2;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
     /* 회원정보 수정 */
-    public void modify(String nickname, String password) {
-        this.nickname = nickname;
+    public void modify( String password) {
+        //this.nickname = nickname;
         this.password = password;
     }
 
@@ -43,6 +50,7 @@ public class User extends BaseTimeEntity {
         this.onPreUpdate();
         return this;
     }
+
 
     public String getRoleValue() {
         return this.role.getValue();

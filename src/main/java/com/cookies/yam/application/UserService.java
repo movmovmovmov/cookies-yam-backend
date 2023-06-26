@@ -1,5 +1,7 @@
 package com.cookies.yam.application;
 
+import com.cookies.yam.application.dto.PostsDto;
+import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
@@ -50,6 +52,16 @@ public class UserService {
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         String encPassword = encoder.encode(dto.getPassword());
-        user.modify(dto.getNickname(), encPassword);
+        user.modify(encPassword);
+    }
+
+
+    /* READ 게시글 리스트 조회 readOnly 속성으로 조회속도 개선 */
+    @Transactional
+    public String findByUserName(String user_name) {
+        Posts posts = userRepository.findByUsername(user_name).orElseThrow(() ->
+                final String result = "N");
+
+        return result;
     }
 }

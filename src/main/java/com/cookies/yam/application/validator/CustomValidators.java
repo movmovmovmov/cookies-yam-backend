@@ -1,7 +1,7 @@
 package com.cookies.yam.application.validator;
 
-import com.cookie.yam.application.dto.UserDto;
-import com.cookie.yam.infrastructure.persistence.UserRepository;
+import com.cookies.yam.application.dto.UserDto;
+import com.cookies.yam.infrastructure.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -13,7 +13,7 @@ import org.springframework.validation.Errors;
 @Component
 public class CustomValidators {
 
-    @RequiredArgsConstructor
+    /*@RequiredArgsConstructor
     @Component
     public static class EmailValidator extends AbstractValidator<UserDto.Request> {
         private final UserRepository userRepository;
@@ -25,7 +25,7 @@ public class CustomValidators {
             }
         }
     }
-
+*/
     @RequiredArgsConstructor
     @Component
     public static class NicknameValidator extends AbstractValidator<UserDto.Request> {

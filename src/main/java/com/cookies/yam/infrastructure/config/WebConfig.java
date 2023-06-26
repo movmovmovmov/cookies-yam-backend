@@ -1,6 +1,6 @@
 package com.cookies.yam.infrastructure.config;
 
-import com.coco.board.application.security.auth.LoginUserArgumentResolver;
+import com.cookies.yam.application.security.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

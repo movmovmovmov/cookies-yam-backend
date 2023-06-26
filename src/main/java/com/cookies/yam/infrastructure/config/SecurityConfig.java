@@ -1,7 +1,7 @@
 package com.cookies.yam.infrastructure.config;
 
-import com.coco.board.application.security.oauth.CustomOAuth2UserService;
-import com.coco.board.application.security.auth.CustomUserDetailsService;
+import com.cookies.yam.application.security.oauth.CustomOAuth2UserService;
+import com.cookies.yam.application.security.auth.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

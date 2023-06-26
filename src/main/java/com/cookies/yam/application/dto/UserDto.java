@@ -33,11 +33,12 @@ public class UserDto {
         @NotBlank(message = "닉네임은 필수 입력 값입니다.")
         private String nickname;
 
-        @Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$", message = "이메일 형식이 올바르지 않습니다.")
+       /* @Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$", message = "이메일 형식이 올바르지 않습니다.")
         @NotBlank(message = "이메일은 필수 입력 값입니다.")
         private String email;
-
+       */
         private Role role;
+
 
         /* DTO -> Entity */
         public User toEntity() {
@@ -46,7 +47,7 @@ public class UserDto {
                     .username(username)
                     .password(password)
                     .nickname(nickname)
-                    .email(email)
+                    //.email(email)
                     .role(role.USER)
                     .build();
             return user;
@@ -66,7 +67,7 @@ public class UserDto {
         private final Long id;
         private final String username;
         private final String nickname;
-        private final String email;
+        //private final String email;
         private final Role role;
         private final String modifiedDate;
 
@@ -75,7 +76,7 @@ public class UserDto {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
-            this.email = user.getEmail();
+            //this.email = user.getEmail();
             this.role = user.getRole();
             this.modifiedDate = user.getModifiedDate();
         }

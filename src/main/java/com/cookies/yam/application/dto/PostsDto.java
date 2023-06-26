@@ -24,7 +24,13 @@ public class PostsDto {
         private String title;
         private String writer;
         private String content;
+
+        private int limit_user;
+
+        private int total_count;
+
         private String createdDate, modifiedDate;
+
         private int view;
         private User user;
 
@@ -32,6 +38,7 @@ public class PostsDto {
         public Posts toEntity() {
             Posts posts = Posts.builder()
                     .id(id)
+
                     .title(title)
                     .writer(writer)
                     .content(content)

@@ -4,6 +4,7 @@ import com.cookies.yam.application.security.auth.LoginUser;
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
 import com.cookies.yam.application.validator.CustomValidators;
+import com.cookies.yam.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
 import org.springframework.scheduling.annotation.Async;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 회원 관련 Controller
@@ -66,7 +68,14 @@ public class UserController {
         return "redirect:/auth/login";
     }
 
+    /* ID 체크 */
+    @Async
+    @PostMapping("/vali/userName")
+    public boolean valiUserName(@RequestParam(value = "userName" )) {
+        Optional<User> user = userService.findUserName("test");
+        if (user.)
 
+    }
 
     @GetMapping("/auth/login")
     public String login(@RequestParam(value = "error", required = false)String error,

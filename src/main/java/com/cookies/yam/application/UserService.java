@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -58,10 +59,10 @@ public class UserService {
 
     /* READ 게시글 리스트 조회 readOnly 속성으로 조회속도 개선 */
     @Transactional
-    public String findByUserName(String user_name) {
-        Posts posts = userRepository.findByUsername(user_name).orElseThrow(() ->
-                final String result = "N");
+    public Optional<User> findUserName(String user_name) {
+        Optional<User> user = userRepository.findByUsername(user_name);
 
-        return result;
+        return user;
     }
+
 }

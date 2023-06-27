@@ -64,6 +64,11 @@ public class PostsDto {
         private final String createdDate, modifiedDate;
         private final int view;
         private final Long userId;
+
+        private final int limit_user;
+
+        private final int total_count;
+
         private final List<CommentDto.Response> comments;
 
         /* Entity -> Dto*/
@@ -75,6 +80,8 @@ public class PostsDto {
             this.createdDate = posts.getCreatedDate();
             this.modifiedDate = posts.getModifiedDate();
             this.view = posts.getView();
+            this.total_count = posts.getTotal_count();
+            this.limit_user = posts.getLimit_user();
             this.userId = posts.getUser().getId();
             this.comments = posts.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList());
         }

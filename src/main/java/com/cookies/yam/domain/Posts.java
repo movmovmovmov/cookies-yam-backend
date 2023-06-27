@@ -32,6 +32,16 @@ public class Posts extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column
+    private int limit_user;
+
+    @Column
+    private int total_count;
+
+    @Column
+    private String category;
+
+
     @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc") // 댓글 정렬
     private List<Comment> comments;

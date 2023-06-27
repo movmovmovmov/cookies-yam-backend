@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,28 +26,12 @@ import java.util.List;
  */
 @Slf4j
 @RequiredArgsConstructor
-@Controller
+@RequestMapping("/api/vi")
+@RestController
 public class PostsIndexController {
 
     private final PostsService postsService;
 
-    @GetMapping("/")                 /* default page = 0, size = 10  */
-    public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
-            Pageable pageable, @LoginUser UserDto.Response user) {
-        Page<Posts> list = postsService.pageList(pageable);
-
-        if (user != null) {
-            model.addAttribute("user", user);
-        }
-
-        model.addAttribute("posts", list);
-        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
-        model.addAttribute("next", pageable.next().getPageNumber());
-        model.addAttribute("hasNext", list.hasNext());
-        model.addAttribute("hasPrev", list.hasPrevious());
-
-        return "index";
-    }
     /* 글 작성 */
     @GetMapping("/posts/write")
     public String write(@LoginUser UserDto.Response user, Model model) {

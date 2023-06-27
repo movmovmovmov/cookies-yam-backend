@@ -71,8 +71,8 @@ public class UserController {
 
     /* ID 체크 */
     @Async
-    @PostMapping("/vali/userName")
-    public boolean valiUserName(@RequestParam(value = "userName" )) {
+    @PostMapping("/auth/join/check")
+    public boolean checkUserName(@RequestParam(value = "userName" )) {
         Optional<User> user = userService.findUserName("test");
         if (user.)
 

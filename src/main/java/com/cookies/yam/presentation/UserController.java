@@ -27,7 +27,8 @@ import java.util.Optional;
  * 회원 관련 Controller
  */
 @RequiredArgsConstructor
-@Controller
+@RestController
+@RequestMapping("/api/vi")
 public class UserController {
 
     private final UserService userService;

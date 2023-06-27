@@ -26,11 +26,10 @@ public class UserDto {
         @NotBlank(message = "아이디는 필수 입력 값입니다.")
         private String username;
 
-        @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
+
         private String password;
 
-        @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,10}$", message = "닉네임은 특수문자를 제외한 2~10자리여야 합니다.")
-        @NotBlank(message = "닉네임은 필수 입력 값입니다.")
+
         private String nickname;
 
        /* @Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$", message = "이메일 형식이 올바르지 않습니다.")
@@ -39,6 +38,21 @@ public class UserDto {
        */
         private Role role;
 
+        private String address1;
+
+        private String address2;
+
+        private String address3;
+
+        private String category1;
+
+        private String category2;
+
+        private String category3;
+
+        private String category4;
+
+        private String category5;
 
         /* DTO -> Entity */
         public User toEntity() {
@@ -47,7 +61,14 @@ public class UserDto {
                     .username(username)
                     .password(password)
                     .nickname(nickname)
-                    //.email(email)
+                    .address1(address1)
+                    .address2(address2)
+                    .address3(address3)
+                    .category1(category1)
+                    .category2(category2)
+                    .category3(category3)
+                    .category4(category4)
+                    .category5(category5)
                     .role(role.USER)
                     .build();
             return user;
@@ -71,11 +92,36 @@ public class UserDto {
         private final Role role;
         private final String modifiedDate;
 
+        private final String address1;
+
+        private final String address2;
+
+        private final String address3;
+
+        private final String category1;
+
+        private final String category2;
+
+        private final String category3;
+
+        private final String category4;
+
+        private final String category5;
+
+
         /* Entity -> dto */
         public Response(User user) {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
+            this.address1 = user.getAddress1();
+            this.address2 = user.getAddress2();
+            this.address3 = user.getAddress3();
+            this.category1 = user.getCategory1();
+            this.category2 = user.getCategory2();
+            this.category3 = user.getCategory3();
+            this.category4 = user.getCategory4();
+            this.category5 = user.getCategory5();
             //this.email = user.getEmail();
             this.role = user.getRole();
             this.modifiedDate = user.getModifiedDate();

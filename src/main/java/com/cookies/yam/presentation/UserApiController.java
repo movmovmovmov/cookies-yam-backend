@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST API Controller
  */
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/vi")
 @RestController
 public class UserApiController {
 

@@ -33,6 +33,23 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, length = 30, unique = false)
     private String address2;
 
+    @Column(nullable = false, length = 30, unique = false)
+    private String address3;
+
+    @Column
+    private String category1;
+
+    @Column
+    private String category2;
+
+    @Column
+    private String category3;
+
+    @Column
+    private String category4;
+
+    @Column
+    private String category5;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

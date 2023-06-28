@@ -33,18 +33,15 @@ public class UserController {
 
     private final UserService userService;
 
-    //private final CustomValidators.EmailValidator EmailValidator;
-    private final CustomValidators.NicknameValidator NicknameValidator;
+
     private final CustomValidators.UsernameValidator UsernameValidator;
 
     /* 커스텀 유효성 검증을 위해 추가 */
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
-        //binder.addValidators(EmailValidator);
-        binder.addValidators(NicknameValidator);
         binder.addValidators(UsernameValidator);
     }
-
+    /* 기존의 회원가입 페이지 사용X */
     @GetMapping("/auth/join")
     public String join() {
         return "/user/user-join";

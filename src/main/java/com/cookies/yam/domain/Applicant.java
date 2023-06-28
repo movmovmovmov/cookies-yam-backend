@@ -22,6 +22,9 @@ public class Applicant extends BaseTimeEntity {
     @Column(nullable = false, length = 30, unique = true)
     private User user;
 
+    @OneToMany(mappedBy = "Applicant", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @Column(nullable = false, length = 30, unique = true)
+    private Posts posts;
 
 
 

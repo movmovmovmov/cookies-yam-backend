@@ -21,8 +21,11 @@ public class PostsDto {
     public static class Request {
 
         private Long id;
+
         private String title;
+
         private String writer;
+
         private String content;
 
         private int limit_user;
@@ -32,13 +35,19 @@ public class PostsDto {
         private String createdDate, modifiedDate;
 
         private int view;
+
         private User user;
+
+        private String searchValue;
+
+        private String keyword;
+
+        private String order;
 
         /* Dto -> Entity */
         public Posts toEntity() {
             Posts posts = Posts.builder()
                     .id(id)
-
                     .title(title)
                     .writer(writer)
                     .content(content)
@@ -55,6 +64,7 @@ public class PostsDto {
      * Entity 클래스를 생성자 파라미터로 받아 데이터를 Dto로 변환하여 응답
      * 별도의 전달 객체를 활용해 연관관계를 맺은 엔티티간의 무한참조를 방지
      */
+
     @Getter
     public static class Response {
         private final Long id;
@@ -64,11 +74,8 @@ public class PostsDto {
         private final String createdDate, modifiedDate;
         private final int view;
         private final Long userId;
-
         private final int limit_user;
-
         private final int total_count;
-
         private final List<CommentDto.Response> comments;
 
         /* Entity -> Dto*/

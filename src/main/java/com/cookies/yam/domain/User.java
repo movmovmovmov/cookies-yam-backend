@@ -93,4 +93,6 @@ public class User extends BaseTimeEntity {
     public String getRoleValue() {
         return this.role.getValue();
     }
+
+
 }

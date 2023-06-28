@@ -5,6 +5,7 @@ import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
 import com.cookies.yam.application.validator.CustomValidators;
 import com.cookies.yam.domain.User;
+import com.cookies.yam.infrastructure.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,7 @@ public class UserApiController {
     @PostMapping("/auth/join/check")
     public String checkUserName(@RequestParam(value = "userName" ) String userName) {
         Optional<User> user = userService.findByUsername(userName);
+
         if (user.isPresent()) {
             return user.get().getUsername();
         } else {

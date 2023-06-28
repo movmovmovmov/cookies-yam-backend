@@ -1,5 +1,7 @@
 package com.cookies.yam.application.dto;
 
+import com.cookies.yam.domain.Address;
+import com.cookies.yam.domain.Category;
 import com.cookies.yam.domain.Role;
 import com.cookies.yam.domain.User;
 import lombok.*;
@@ -38,21 +40,17 @@ public class UserDto {
        */
         private Role role;
 
-        private String address1;
+        private Address address;
 
-        private String address2;
+        private Category category1;
 
-        private String address3;
+        private Category category2;
 
-        private String category1;
+        private Category category3;
 
-        private String category2;
+        private Category category4;
 
-        private String category3;
-
-        private String category4;
-
-        private String category5;
+        private Category category5;
 
         /* DTO -> Entity */
         public User toEntity() {
@@ -61,9 +59,7 @@ public class UserDto {
                     .username(username)
                     .password(password)
                     .nickname(nickname)
-                    .address1(address1)
-                    .address2(address2)
-                    .address3(address3)
+                    .address(address)
                     .category1(category1)
                     .category2(category2)
                     .category3(category3)
@@ -92,21 +88,16 @@ public class UserDto {
         private final Role role;
         private final String modifiedDate;
 
-        private final String address1;
+        private final Address address;
+        private final Category category1;
 
-        private final String address2;
+        private final Category category2;
 
-        private final String address3;
+        private final Category category3;
 
-        private final String category1;
+        private final Category category4;
 
-        private final String category2;
-
-        private final String category3;
-
-        private final String category4;
-
-        private final String category5;
+        private final Category category5;
 
 
         /* Entity -> dto */
@@ -114,15 +105,12 @@ public class UserDto {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
-            this.address1 = user.getAddress1();
-            this.address2 = user.getAddress2();
-            this.address3 = user.getAddress3();
+            this.address = user.getAddress();
             this.category1 = user.getCategory1();
             this.category2 = user.getCategory2();
             this.category3 = user.getCategory3();
             this.category4 = user.getCategory4();
             this.category5 = user.getCategory5();
-            //this.email = user.getEmail();
             this.role = user.getRole();
             this.modifiedDate = user.getModifiedDate();
         }

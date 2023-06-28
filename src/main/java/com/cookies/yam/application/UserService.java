@@ -1,6 +1,8 @@
 package com.cookies.yam.application;
 
 import com.cookies.yam.application.dto.PostsDto;
+import com.cookies.yam.domain.Address;
+import com.cookies.yam.domain.Category;
 import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
@@ -53,13 +55,19 @@ public class UserService {
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         String encPassword = encoder.encode(dto.getPassword());
-        user.modify(encPassword);
+        String nickname = dto.getNickname();
+        Address address = dto.getAddress();
+        Category category1 = dto.getCategory1();
+        Category category2 = dto.getCategory2();
+        Category category3 = dto.getCategory3();
+        Category category4 = dto.getCategory4();
+        Category category5 = dto.getCategory5();
+        user.modify(nickname, encPassword, address, category1, category2, category3, category4, category5);
     }
 
 
-    /* READ 게시글 리스트 조회 readOnly 속성으로 조회속도 개선 */
     @Transactional
-    public Optional<User> findUserName(String user_name) {
+    public Optional<User> findByUsername(String user_name) {
         Optional<User> user = userRepository.findByUsername(user_name);
 
         return user;

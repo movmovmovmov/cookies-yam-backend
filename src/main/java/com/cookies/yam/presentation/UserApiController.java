@@ -52,34 +52,37 @@ public class UserApiController {
 
     /* 회원가입 */
     @PostMapping("/auth/joinProc")
-    public String joinProc(@Valid UserDto.Request dto, Errors errors, Model model) {
+    public void joinProc( UserDto.Request dto, Errors errors, Model model) {
         if (errors.hasErrors()) {
             /* 회원가입 실패시 입력 데이터 값을 유지 */
             model.addAttribute("userDto", dto);
 
             /* 유효성 통과 못한 필드와 메시지를 핸들링 */
-            Map<String, String> validatorResult = userService.validateHandling(errors);
+            /*Map<String, String> validatorResult = userService.validateHandling(errors);
             for (String key : validatorResult.keySet()) {
                 model.addAttribute(key, validatorResult.get(key));
-            }
+            }*/
             /* 회원가입 페이지로 다시 리턴 */
-            return "/user/user-join";
+            //return "/user/user-join";
         }
         userService.userJoin(dto);
-        return "redirect:/auth/login";
+        //return "redirect:/auth/login";
     }
 
     /* ID 체크 */
     @Async
     @PostMapping("/auth/join/check")
-    public boolean checkUserName(@RequestParam(value = "userName" )) {
-        Optional<User> user = userService.findUserName("test");
-
-
+    public String checkUserName(@RequestParam(value = "userName" ) String userName) {
+        Optional<User> user = userService.findByUsername(userName);
+        if (user.isPresent()) {
+            return user.get().getUsername();
+        } else {
+            return "null";
+        }
     }
 
     @GetMapping("/auth/login")
-    public String login(@RequestParam(value = "error", required = false)String error,
+    public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "exception", required = false)String exception,
                         Model model) {
         model.addAttribute("error", error);
@@ -98,14 +101,15 @@ public class UserApiController {
         return "redirect:/";
     }
 
-    /* 회원정보 수정 */
+    /* 회원정보 관련 수정 */
     @GetMapping("/modify")
-    public String modify(@LoginUser UserDto.Response user, Model model) {
+    public void modify(@LoginUser UserDto.Response user, Model model) {
         if (user != null) {
             model.addAttribute("user", user);
         }
-        return "/user/user-modify";
+
     }
+
 
     @PutMapping("/user")
     public ResponseEntity<String> modify(@RequestBody UserDto.Request dto) {

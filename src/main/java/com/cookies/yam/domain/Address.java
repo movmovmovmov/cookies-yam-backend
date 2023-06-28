@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,8 +33,8 @@ public class Address extends BaseTimeEntity {
     private String address_depth3;
 
 
-
-
+    @OneToMany(mappedBy = "address")
+    private List<User> user = new ArrayList<>();
 
 
 }

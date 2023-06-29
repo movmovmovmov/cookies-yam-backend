@@ -18,15 +18,18 @@ public class Applicant extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "Applicant", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @Column(nullable = false, length = 30, unique = true)
+
+    @OneToOne
+    @JoinColumn(name = "user_ref")
     private User user;
 
-    @OneToMany(mappedBy = "Applicant", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @Column(nullable = false, length = 30, unique = true)
+    @OneToOne
+    @JoinColumn(name = "post_ref")
     private Posts posts;
 
 
+    @Column
+    private String status;
 
 
 }

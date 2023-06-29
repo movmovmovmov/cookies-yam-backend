@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -22,10 +24,11 @@ public class PostsService {
 
     /* CREATE */
     @Transactional
-    public Long save(PostsDto.Request dto, String nickname) {
+    public Long save(PostsDto.Request dto, String username) {
         /* User 정보를 가져와 dto에 담아준다. */
-        User user = userRepository.findByNickname(nickname);
-        dto.setUser(user);
+        Optional<User> user = userRepository.findByUsername(username);
+        user.ifPresent(u -> dto.setUser(u));
+
         log.info("PostsService save() 실행");
         Posts posts = dto.toEntity();
         postsRepository.save(posts);

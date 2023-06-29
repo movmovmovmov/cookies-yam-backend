@@ -34,7 +34,7 @@ public class Address extends BaseTimeEntity {
 
 
     @OneToMany(mappedBy = "address")
-    private List<User> user = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
 
 }

@@ -2,7 +2,6 @@ package com.cookies.yam.application.dto;
 
 import com.cookies.yam.domain.Address;
 import com.cookies.yam.domain.Category;
-import com.cookies.yam.domain.Role;
 import com.cookies.yam.domain.User;
 import lombok.*;
 
@@ -24,13 +23,9 @@ public class UserDto {
 
         private Long id;
 
-        @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{4,20}$", message = "아이디는 특수문자를 제외한 4~20자리여야 합니다.")
-        @NotBlank(message = "아이디는 필수 입력 값입니다.")
         private String username;
 
-
         private String password;
-
 
         private String nickname;
 
@@ -38,7 +33,6 @@ public class UserDto {
         @NotBlank(message = "이메일은 필수 입력 값입니다.")
         private String email;
        */
-        private Role role;
 
         private Address address;
 
@@ -65,7 +59,6 @@ public class UserDto {
                     .category3(category3)
                     .category4(category4)
                     .category5(category5)
-                    .role(role.USER)
                     .build();
             return user;
         }
@@ -82,13 +75,17 @@ public class UserDto {
     public static class Response implements Serializable {
 
         private final Long id;
+
         private final String username;
+
         private final String nickname;
+
         //private final String email;
-        private final Role role;
+
         private final String modifiedDate;
 
         private final Address address;
+
         private final Category category1;
 
         private final Category category2;
@@ -111,7 +108,6 @@ public class UserDto {
             this.category3 = user.getCategory3();
             this.category4 = user.getCategory4();
             this.category5 = user.getCategory5();
-            this.role = user.getRole();
             this.modifiedDate = user.getModifiedDate();
         }
     }

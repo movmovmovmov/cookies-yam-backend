@@ -24,49 +24,32 @@ public class User extends BaseTimeEntity {
     @Column(length = 100)
     private String password;
 
-    @ManyToOne(optional = false)
-    @JoinTable(name = "category_user",
-            joinColumns = {@JoinColumn(name = "category1_ref", referencedColumnName = "category1_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "category1_ref")
     private Category category1;
 
-    @ManyToOne(optional = false)
-    @JoinTable(name = "category_user",
-            joinColumns = {@JoinColumn(name = "category2_ref", referencedColumnName = "category2_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "category2_ref")
     private Category category2;
 
-    @ManyToOne(optional = false)
-    @JoinTable(name = "category_user",
-            joinColumns = {@JoinColumn(name = "category3_ref", referencedColumnName = "category3_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "category3_ref")
     private Category category3;
 
-    @ManyToOne(optional = false)
-    @JoinTable(name = "category_user",
-            joinColumns = {@JoinColumn(name = "category4_ref", referencedColumnName = "category4_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "category4_ref")
     private Category category4;
 
-    @ManyToOne(optional = false)
-    @JoinTable(name = "category_user",
-            joinColumns = {@JoinColumn(name = "category5_ref", referencedColumnName = "category5_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "category5_ref")
     private Category category5;
 
-
-
-    @ManyToOne(optional = false)
-    @JoinTable(name = "address_user",
-            joinColumns = {@JoinColumn(name = "address_ref", referencedColumnName = "address_ref")},
-            inverseJoinColumns = {@JoinColumn(name = "id", referencedColumnName = "id")})
+    @OneToOne
+    @JoinColumn(name = "address_ref")
     private Address address;
 
 
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     /* 회원정보 수정 */
     public void modify(String nickname, String password, Address address, Category category1, Category category2,
@@ -89,10 +72,6 @@ public class User extends BaseTimeEntity {
         return this;
     }
 
-
-    public String getRoleValue() {
-        return this.role.getValue();
-    }
 
 
 }

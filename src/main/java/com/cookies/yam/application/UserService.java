@@ -24,13 +24,13 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder encoder;
+    //private final BCryptPasswordEncoder encoder;
 
     /* 회원가입 */
     @Transactional
     public void userJoin(UserDto.Request dto) {
 
-        dto.setPassword(encoder.encode(dto.getPassword()));
+        //dto.setPassword(encoder.encode(dto.getPassword()));
 
         userRepository.save(dto.toEntity());
     }
@@ -54,15 +54,16 @@ public class UserService {
         User user = userRepository.findById(dto.toEntity().getId()).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        String encPassword = encoder.encode(dto.getPassword());
+        //String encPassword = encoder.encode(dto.getPassword());
         String nickname = dto.getNickname();
         Address address = dto.getAddress();
+        String password = dto.getPassword();
         Category category1 = dto.getCategory1();
         Category category2 = dto.getCategory2();
         Category category3 = dto.getCategory3();
         Category category4 = dto.getCategory4();
         Category category5 = dto.getCategory5();
-        user.modify(nickname, encPassword, address, category1, category2, category3, category4, category5);
+        user.modify(nickname, password, address, category1, category2, category3, category4, category5);
     }
 
 

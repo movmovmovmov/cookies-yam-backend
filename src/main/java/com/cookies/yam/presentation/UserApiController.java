@@ -1,6 +1,5 @@
 package com.cookies.yam.presentation;
 
-import com.cookies.yam.application.security.auth.LoginUser;
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
 import com.cookies.yam.application.validator.CustomValidators;
@@ -36,15 +35,17 @@ public class UserApiController {
 
     private final UserService userService;
 
-    private final AuthenticationManager authenticationManager;
+    //private final AuthenticationManager authenticationManager;
 
-    private final CustomValidators.UsernameValidator UsernameValidator;
+    //private final CustomValidators.UsernameValidator UsernameValidator;
 
     /* 커스텀 유효성 검증을 위해 추가 */
-    @InitBinder
+    /*@InitBinder
     public void validatorBinder(WebDataBinder binder) {
         binder.addValidators(UsernameValidator);
     }
+
+     */
     /* 기존의 회원가입 페이지 사용X */
     @GetMapping("/auth/join")
     public String join() {
@@ -58,13 +59,6 @@ public class UserApiController {
             /* 회원가입 실패시 입력 데이터 값을 유지 */
             model.addAttribute("userDto", dto);
 
-            /* 유효성 통과 못한 필드와 메시지를 핸들링 */
-            /*Map<String, String> validatorResult = userService.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }*/
-            /* 회원가입 페이지로 다시 리턴 */
-            //return "/user/user-join";
         }
         userService.userJoin(dto);
         //return "redirect:/auth/login";
@@ -105,7 +99,7 @@ public class UserApiController {
 
     /* 회원정보 관련 수정 */
     @GetMapping("/modify")
-    public void modify(@LoginUser UserDto.Response user, Model model) {
+    public void modify(UserDto.Response user, Model model) {
         if (user != null) {
             model.addAttribute("user", user);
         }
@@ -118,11 +112,11 @@ public class UserApiController {
         userService.modify(dto);
 
         /* 변경된 세션 등록 */
-        Authentication authentication = authenticationManager.authenticate(
+        /*Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        */
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

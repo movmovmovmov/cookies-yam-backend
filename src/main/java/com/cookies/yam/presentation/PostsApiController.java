@@ -51,6 +51,7 @@ public class PostsApiController {
     }
 
     /* LIST */
+    /* param : searchValue, keyword, orderValue, page*/
     @GetMapping("/posts/list")
     /* default page = 0, size = 10  */
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC)

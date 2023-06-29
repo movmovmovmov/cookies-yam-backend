@@ -22,15 +22,13 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private String writer;
-
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_ref")
     private User user;
+
 
     @Column
     private int limit_user;
@@ -38,17 +36,28 @@ public class Posts extends BaseTimeEntity {
     @Column
     private int total_count;
 
-    @Column
-    private String category;
+    @OneToOne
+    @JoinColumn(name = "address_ref")
+    private Address address;
+
+    @OneToOne
+    @JoinColumn(name = "category_ref")
+    private Category category;
 
 
+
+
+    /*
     @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc") // 댓글 정렬
     private List<Comment> comments;
-
+    */
     /* 게시글 수정 */
+
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
+
+
 }

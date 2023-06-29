@@ -33,8 +33,6 @@ public class Address extends BaseTimeEntity {
     private String address_depth3;
 
 
-    @OneToMany(mappedBy = "address")
-    private List<User> users = new ArrayList<>();
 
 
 }

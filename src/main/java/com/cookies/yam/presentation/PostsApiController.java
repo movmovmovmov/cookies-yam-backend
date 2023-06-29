@@ -1,6 +1,6 @@
 package com.cookies.yam.presentation;
 
-import com.cookies.yam.application.security.auth.LoginUser;
+
 import com.cookies.yam.application.PostsService;
 import com.cookies.yam.application.dto.PostsDto;
 import com.cookies.yam.application.dto.UserDto;
@@ -26,7 +26,7 @@ public class PostsApiController {
 
     /* CREATE */
     @PostMapping("/posts/save")
-    public ResponseEntity save(@RequestBody PostsDto.Request dto, @LoginUser UserDto.Response user) {
+    public ResponseEntity save(@RequestBody PostsDto.Request dto, UserDto.Response user) {
         return ResponseEntity.ok(postsService.save(dto, user.getNickname()));
     }
 
@@ -55,7 +55,7 @@ public class PostsApiController {
     @GetMapping("/posts/list")
     /* default page = 0, size = 10  */
     public String index(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
-    Pageable pageable, @LoginUser UserDto.Response user) {
+    Pageable pageable, UserDto.Response user) {
         Page<Posts> list = postsService.pageList(pageable);
 
         if (user != null) {

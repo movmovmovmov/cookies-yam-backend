@@ -9,11 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
+
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -54,12 +51,8 @@ public class UserApiController {
 
     /* 회원가입 */
     @PostMapping("/auth/joinProc")
-    public void joinProc( UserDto.Request dto, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            /* 회원가입 실패시 입력 데이터 값을 유지 */
-            model.addAttribute("userDto", dto);
+    public void joinProc(UserDto.Request dto) {
 
-        }
         userService.userJoin(dto);
         //return "redirect:/auth/login";
     }
@@ -89,11 +82,13 @@ public class UserApiController {
     /* Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회 */
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        /*
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+
+         */
         return "redirect:/";
     }
 

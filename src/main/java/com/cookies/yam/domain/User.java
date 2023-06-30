@@ -21,48 +21,59 @@ public class User extends BaseTimeEntity {
     @Column
     private String nickname;
 
-    @Column(length = 100)
+    @Column
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "category1_ref")
-    private Category category1;
+    @Column
+    private Long category1_ref;
 
-    @OneToOne
-    @JoinColumn(name = "category2_ref")
-    private Category category2;
+    @Column
+    private Long category2_ref;
 
-    @OneToOne
-    @JoinColumn(name = "category3_ref")
-    private Category category3;
+    @Column
+    private Long category3_ref;
 
-    @OneToOne
-    @JoinColumn(name = "category4_ref")
-    private Category category4;
+    @Column
+    private Long category4_ref;
 
-    @OneToOne
-    @JoinColumn(name = "category5_ref")
-    private Category category5;
+    @Column
+    private Long category5_ref;
 
-    @OneToOne
-    @JoinColumn(name = "address_ref")
-    private Address address;
-
+    @Column
+    private Long address_ref;
 
 
 
     /* 회원정보 수정 */
-    public void modify(String nickname, String password, Address address, Category category1, Category category2,
-                       Category category3, Category category4, Category category5) {
-        this.nickname = nickname;
+    public void modify(String password) {
         this.password = password;
-        this.address = address;
-        this.category1 = category1;
-        this.category2 = category2;
-        this.category3 = category3;
-        this.category4 = category4;
-        this.category5 = category5;
 
+    }
+    /* 회원 동네 정보 입력 */
+    public void addressModify(Long address_ref){
+        this.address_ref = address_ref;
+    }
+
+    /* 닉네임 변경 */
+    public void nicknameModify(String nickname){
+        this.nickname = nickname;
+    }
+
+    /* 회원 선호 카테고리 입력*/
+    public void category1Modify(Long category1){
+        this.category1_ref = category1_ref;
+    }
+    public void category2Modify(Long category2){
+        this.category2_ref = category2_ref;
+    }
+    public void category3Modify(Long category3){
+        this.category3_ref = category3_ref;
+    }
+    public void category4(Long category4){
+        this.category4_ref = category4_ref;
+    }
+    public void category5Modify(Long category5){
+        this.category5_ref = category5_ref;
     }
 
     /* 소셜로그인시 이미 등록된 회원이라면 수정날짜만 업데이트해줘서

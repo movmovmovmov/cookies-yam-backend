@@ -9,6 +9,7 @@ import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -32,7 +33,16 @@ public class UserService {
 
         //dto.setPassword(encoder.encode(dto.getPassword()));
 
-        userRepository.save(dto.toEntity());
+        User user = userRepository.save(dto.toEntity());
+        user.getUsername();
+    }
+
+    /* 회원가입 시, 아이디 중복 체크*/
+    @Transactional
+    public boolean existsByUsername(String username){
+        boolean result;
+        result = userRepository.existsByUsername(username);
+        return result;
     }
 
     /* 회원가입 시, 유효성 검사 및 중복 체크 */
@@ -48,30 +58,49 @@ public class UserService {
         return validatorResult;
     }
 
-    /* 회원수정 (dirty checking) */
+    /* 회원정보(비밀번호) 수정 */
     @Transactional
     public void modify(UserDto.Request dto) {
-        User user = userRepository.findById(dto.toEntity().getId()).orElseThrow(() ->
+        User user = userRepository.findByUsername(dto.toEntity().getUsername()).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         //String encPassword = encoder.encode(dto.getPassword());
-        String nickname = dto.getNickname();
-        Address address = dto.getAddress();
         String password = dto.getPassword();
-        Category category1 = dto.getCategory1();
-        Category category2 = dto.getCategory2();
-        Category category3 = dto.getCategory3();
-        Category category4 = dto.getCategory4();
-        Category category5 = dto.getCategory5();
-        user.modify(nickname, password, address, category1, category2, category3, category4, category5);
+        user.modify(password);
+    }
+
+    /* 회원 동네 정보 입력 */
+    public void addressModify(String username, Long addressId){
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        Address address = entityManager.find(Address.class, addressId);
+
+        Long address_id = dto.getAddress_id();
+        user.addressModify(address_id);
+    }
+
+    /* 회원 닉네임 변경 */
+    public void nicknameModify(UserDto.Request dto) {
+        User user = userRepository.findByUsername(dto.toEntity().getUsername()).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        String nickname = dto.getNickname();
+        user.nicknameModify(nickname);
     }
 
 
     @Transactional
-    public Optional<User> findByUsername(String user_name) {
-        Optional<User> user = userRepository.findByUsername(user_name);
+    public Optional<User> findByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
 
         return user;
     }
+
+    @Transactional
+    public User findById(int id) {
+
+         User user = userRepository.findById(id);
+        return user;
+    }
+
 
 }

@@ -24,20 +24,24 @@ public class RestHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-
         String uri = request.getRequestURI();
-        logger.info("PostsService save() 실행");
-        System.out.println("테스트");
-        System.out.println("테스트: " + uri);
+        logger.info("preHandle Process URI: " + uri);
 
-        if("/api/vi/auth/joinProc".equals(uri)){
+        if ("/api/vi/auth/joinProc".equals(uri) || "/api/vi/auth/join/check".equals(uri) || "/api/vi/user/detail".equals(uri)) {
             String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+
+            logger.info("requestBody value TEST: " + requestBody);
             ObjectMapper objectMapper = new ObjectMapper();
             UserDto userDto = objectMapper.readValue(requestBody, UserDto.class);
-            System.out.println("테스트");
+
             // 변환된 DTO를 요청 속성에 저장합니다.
             request.setAttribute("user", userDto);
 
+            return true;
+
+        } else if(true) {
+            return true;
+        } else {
             return true;
         }
         /*
@@ -51,7 +55,7 @@ public class RestHandlerInterceptor implements HandlerInterceptor {
         //request.setAttribute("myDTO", myDTO);
 
          */
-        return true;
+
     }
 
 

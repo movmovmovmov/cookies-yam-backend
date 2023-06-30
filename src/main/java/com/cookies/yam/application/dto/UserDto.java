@@ -3,6 +3,8 @@ package com.cookies.yam.application.dto;
 import com.cookies.yam.domain.Address;
 import com.cookies.yam.domain.Category;
 import com.cookies.yam.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ import java.io.Serializable;
 /**
  * request, response DTO 클래스를 하나로 묶어 InnerStaticClass로 한 번에 관리
  */
+
 public class UserDto {
 
     /** 회원 Service 요청(Request) DTO 클래스 */
@@ -29,17 +32,17 @@ public class UserDto {
 
         private String nickname;
 
-        private Address address;
+        private Long address_id;
 
-        private Category category1;
+        private Long category1_id;
 
-        private Category category2;
+        private Long category2_id;
 
-        private Category category3;
+        private Long category3_id;
 
-        private Category category4;
+        private Long category4_id;
 
-        private Category category5;
+        private Long category5_id;
 
         /* DTO -> Entity */
         public User toEntity() {
@@ -48,8 +51,8 @@ public class UserDto {
                     .username(username)
                     .password(password)
                     .nickname(nickname)
-                    .address(address)
-                    .category1(category1)
+                    .address_ref(address_id)
+                    .category1_ref(category1_id)
                     .category2(category2)
                     .category3(category3)
                     .category4(category4)
@@ -79,7 +82,7 @@ public class UserDto {
 
         private final String modifiedDate;
 
-        private final Address address;
+        private final Long address_ref;
 
         private final Category category1;
 

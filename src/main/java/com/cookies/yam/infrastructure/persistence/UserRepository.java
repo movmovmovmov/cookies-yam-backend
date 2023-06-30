@@ -12,9 +12,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /* user GET */
     User findByNickname(String nickname);
+    User findById(int id);
 
     /* 중복 검사> 중복인 경우 true, 중복되지 않은경우 false 리턴 */
     boolean existsByUsername(String username);
     boolean existsByNickname(String nickname);
+
+
 
 }

@@ -36,7 +36,7 @@ public class Posts extends BaseTimeEntity {
     @Column
     private int total_count;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "address_ref")
     private Address address;
 

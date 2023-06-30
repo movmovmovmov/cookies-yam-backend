@@ -51,12 +51,12 @@ public class UserDto {
                     .username(username)
                     .password(password)
                     .nickname(nickname)
-                    .address_ref(address_id)
-                    .category1_ref(category1_id)
-                    .category2(category2)
-                    .category3(category3)
-                    .category4(category4)
-                    .category5(category5)
+                    .address_id(address_id)
+                    .category1_id(category1_id)
+                    .category2_id(category2_id)
+                    .category3_id(category3_id)
+                    .category4_id(category4_id)
+                    .category5_id(category5_id)
                     .build();
             return user;
         }
@@ -82,17 +82,17 @@ public class UserDto {
 
         private final String modifiedDate;
 
-        private final Long address_ref;
+        private final Long address_id;
 
-        private final Category category1;
+        private final Long category1_id;
 
-        private final Category category2;
+        private final Long category2_id;
 
-        private final Category category3;
+        private final Long category3_id;
 
-        private final Category category4;
+        private final Long category4_id;
 
-        private final Category category5;
+        private final Long category5_id;
 
 
         /* Entity -> dto */
@@ -100,12 +100,12 @@ public class UserDto {
             this.id = user.getId();
             this.username = user.getUsername();
             this.nickname = user.getNickname();
-            this.address = user.getAddress();
-            this.category1 = user.getCategory1();
-            this.category2 = user.getCategory2();
-            this.category3 = user.getCategory3();
-            this.category4 = user.getCategory4();
-            this.category5 = user.getCategory5();
+            this.address_id = user.getAddress_id();
+            this.category1_id = user.getCategory1_id();
+            this.category2_id = user.getCategory2_id();
+            this.category3_id = user.getCategory3_id();
+            this.category4_id = user.getCategory4_id();
+            this.category5_id = user.getCategory5_id();
             this.modifiedDate = user.getModifiedDate();
         }
     }

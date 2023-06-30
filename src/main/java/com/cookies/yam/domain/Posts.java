@@ -25,25 +25,20 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @OneToOne
-    @JoinColumn(name = "user_ref")
-    private User user;
+    @Column(name = "user_ref")
+    private Long user_id;
 
+    @Column(name = "limit_user")
+    private int limit;
 
-    @Column
-    private int limit_user;
+    @Column(name = "total_count")
+    private int count;
 
-    @Column
-    private int total_count;
+    @Column(name = "address_ref")
+    private Long address_id;
 
-    @ManyToOne
-    @JoinColumn(name = "address_ref")
-    private Address address;
-
-    @OneToOne
-    @JoinColumn(name = "category_ref")
-    private Category category;
-
+    @Column(name = "category_ref")
+    private Long category_id;
 
 
 

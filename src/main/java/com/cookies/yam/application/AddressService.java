@@ -33,9 +33,9 @@ public class AddressService {
     }
 
     @Transactional
-    public List<Address> findByAddress_depth3(String address_depth3) {
+    public List<Address> findByDepth3(String depth3) {
 
-        List<Address> address = addressRepository.findByAddress_depth3(address_depth3);
+        List<Address> address = addressRepository.findByDepth3(depth3);
 
         return address;
     }

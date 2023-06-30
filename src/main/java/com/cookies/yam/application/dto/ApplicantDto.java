@@ -23,9 +23,9 @@ public class ApplicantDto {
 
         private Long id;
 
-        private User user;
+        private Long user_id;
 
-        private Posts posts;
+        private Long post_id;
 
         private String status;
 
@@ -35,8 +35,8 @@ public class ApplicantDto {
         public Applicant toEntity() {
             Applicant applicant = Applicant.builder()
                     .id(id)
-                    .user(user)
-                    .posts(posts)
+                    .user_id(user_id)
+                    .post_id(post_id)
                     .status(status)
                     .build();
 
@@ -53,15 +53,15 @@ public class ApplicantDto {
     @Getter
     public static class Response {
         private final Long id;
-        private final User user;
-        private final Posts post;
+        private final Long user_id;
+        private final Long post_id;
         private final String status;
 
         /* Entity -> Dto*/
         public Response(Applicant applicant) {
             this.id = applicant.getId();
-            this.user = applicant.getUser();
-            this.post = applicant.getPosts();
+            this.user_id = applicant.getUser_id();
+            this.post_id = applicant.getPost_id();
             this.status = applicant.getStatus();
 
         }

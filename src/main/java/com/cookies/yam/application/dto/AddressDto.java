@@ -3,6 +3,7 @@ package com.cookies.yam.application.dto;
 import com.cookies.yam.domain.Address;
 import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -23,21 +24,21 @@ public class AddressDto {
 
         private Long id;
 
-        private String address_depth1;
+        private String depth1;
 
-        private String address_depth2;
+        private String depth2;
 
-        private String address_depth3;
+        private String depth3;
 
-        private List<User> users;
+
 
         /* Dto -> Entity */
         public Address toEntity() {
             Address address = Address.builder()
                     .id(id)
-                    .address_depth1(address_depth1)
-                    .address_depth2(address_depth2)
-                    .address_depth3(address_depth3)
+                    .depth1(depth1)
+                    .depth2(depth2)
+                    .depth3(depth3)
                     .build();
             return address;
         }
@@ -52,18 +53,18 @@ public class AddressDto {
     @Getter
     public static class Response {
         private final Long id;
-        private final String address_depth1;
-        private final String address_depth2;
-        private final String address_depth3;
+        private final String depth1;
+        private final String depth2;
+        private final String depth3;
 
 
 
         /* Entity -> Dto*/
         public Response(Address address) {
             this.id = address.getId();
-            this.address_depth1 = address.getAddress_depth1();
-            this.address_depth2 = address.getAddress_depth2();
-            this.address_depth3 = address.getAddress_depth3();
+            this.depth1 = address.getDepth1();
+            this.depth2 = address.getDepth2();
+            this.depth3 = address.getDepth3();
 
 
         }

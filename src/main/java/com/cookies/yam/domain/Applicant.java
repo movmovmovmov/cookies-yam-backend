@@ -18,15 +18,11 @@ public class Applicant extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_ref")
+    private Long user_id;
 
-    @OneToOne
-    @JoinColumn(name = "user_ref")
-    private User user;
-
-    @OneToOne
-    @JoinColumn(name = "post_ref")
-    private Posts posts;
-
+    @Column(name = "post_ref")
+    private Long post_id;
 
     @Column
     private String status;

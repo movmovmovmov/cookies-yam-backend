@@ -27,7 +27,7 @@ public class PostsService {
     public Long save(PostsDto.Request dto, String username) {
         /* User 정보를 가져와 dto에 담아준다. */
         Optional<User> user = userRepository.findByUsername(username);
-        user.ifPresent(u -> dto.setUser(u));
+        user.ifPresent(u -> dto.setUser_id(u.getId()));
 
         log.info("PostsService save() 실행");
         Posts posts = dto.toEntity();

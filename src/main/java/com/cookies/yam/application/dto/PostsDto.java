@@ -24,18 +24,21 @@ public class PostsDto {
 
         private String title;
 
-
         private String content;
 
-        private int limit_user;
+        private int limit;
 
-        private int total_count;
+        private int count;
 
         private String createdDate, modifiedDate;
 
         private int view;
 
-        private User user;
+        private Long user_id;
+
+        private Long category_id;
+
+        private Long address_id;
 
         private String searchValue;
 
@@ -48,9 +51,13 @@ public class PostsDto {
             Posts posts = Posts.builder()
                     .id(id)
                     .title(title)
+                    .limit(limit)
+                    .count(count)
                     .content(content)
                     .view(0)
-                    .user(user)
+                    .user_id(user_id)
+                    .category_id(category_id)
+                    .address_id(address_id)
                     .build();
 
             return posts;
@@ -70,9 +77,13 @@ public class PostsDto {
         private final String content;
         private final String createdDate, modifiedDate;
         private final int view;
-        private final User user;
-        private final int limit_user;
-        private final int total_count;
+
+        private final Long category_id;
+
+        private final Long address_id;
+        private final Long user_id;
+        private final int limit;
+        private final int count;
 
         /* Entity -> Dto*/
         public Response(Posts posts) {
@@ -82,10 +93,11 @@ public class PostsDto {
             this.createdDate = posts.getCreatedDate();
             this.modifiedDate = posts.getModifiedDate();
             this.view = posts.getView();
-            this.total_count = posts.getTotal_count();
-            this.limit_user = posts.getLimit_user();
-
-            this.user = posts.getUser();
+            this.count = posts.getCount();
+            this.limit = posts.getLimit();
+            this.address_id = posts.getAddress_id();
+            this.category_id = posts.getCategory_id();
+            this.user_id = posts.getUser_id();
             //this.comments = posts.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList());
         }
     }

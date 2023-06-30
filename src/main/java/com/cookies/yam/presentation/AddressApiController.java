@@ -33,9 +33,10 @@ public class AddressApiController {
 
     /* 동, 면 검색시 뿌리는 리스트 */
     @PostMapping("/address/list")
-    public List<Address> list(AddressDto.Request dto) {
-        List<Address> addressList = addressService.findByAddress_depth3(dto.getAddress_depth3());
+    public List<Address> list(@RequestBody Address request) {
+        String depth3 = request.getDepth3();
+        List<Address> address = addressService.findByDepth3(depth3);
 
-        return addressList;
+        return address;
     }
 }

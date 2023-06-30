@@ -24,25 +24,29 @@ public class User extends BaseTimeEntity {
     @Column
     private String password;
 
-    @Column
-    private Long category1_ref;
+    @Column(name = "category1_ref")
+    private Long category1_id;
+
+    @Column(name = "category2_ref")
+    private Long category2_id;
+
+    @Column(name = "category3_ref")
+    private Long category3_id;
+
+    @Column(name = "category4_ref")
+    private Long category4_id;
+
+    @Column(name = "category5_ref")
+    private Long category5_id;
+
+    @Column(name = "address_ref")
+    private Long address_id;
 
     @Column
-    private Long category2_ref;
+    private String status;
 
     @Column
-    private Long category3_ref;
-
-    @Column
-    private Long category4_ref;
-
-    @Column
-    private Long category5_ref;
-
-    @Column
-    private Long address_ref;
-
-
+    private String agree_loca_at;
 
     /* 회원정보 수정 */
     public void modify(String password) {
@@ -50,8 +54,8 @@ public class User extends BaseTimeEntity {
 
     }
     /* 회원 동네 정보 입력 */
-    public void addressModify(Long address_ref){
-        this.address_ref = address_ref;
+    public void addressModify(Long address_id){
+        this.address_id = address_id;
     }
 
     /* 닉네임 변경 */
@@ -60,20 +64,20 @@ public class User extends BaseTimeEntity {
     }
 
     /* 회원 선호 카테고리 입력*/
-    public void category1Modify(Long category1){
-        this.category1_ref = category1_ref;
+    public void category1Modify(Long category1_id){
+        this.category1_id = category1_id;
     }
-    public void category2Modify(Long category2){
-        this.category2_ref = category2_ref;
+    public void category2Modify(Long category2_id){
+        this.category2_id = category2_id;
     }
-    public void category3Modify(Long category3){
-        this.category3_ref = category3_ref;
+    public void category3Modify(Long category3_id){
+        this.category3_id = category3_id;
     }
-    public void category4(Long category4){
-        this.category4_ref = category4_ref;
+    public void category4Modify(Long category4_id){
+        this.category4_id = category4_id;
     }
-    public void category5Modify(Long category5){
-        this.category5_ref = category5_ref;
+    public void category5Modify(Long category5_id){
+        this.category5_id = category5_id;
     }
 
     /* 소셜로그인시 이미 등록된 회원이라면 수정날짜만 업데이트해줘서

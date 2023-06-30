@@ -1,5 +1,6 @@
 package com.cookies.yam.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,16 +22,17 @@ public class Address extends BaseTimeEntity {
     private Long id;
 
     // 시, 도
-    @Column(nullable = false, length = 30, unique = true)
-    private String address_depth1;
+    @Column(nullable = false, length = 50, unique = true)
+    private String depth1;
 
     // 구, 군
-    @Column(nullable = false, length = 30, unique = true)
-    private String address_depth2;
+    @Column(nullable = false, length = 50, unique = true)
+    private String depth2;
 
     // 동, 면
-    @Column(nullable = false, length = 30, unique = true)
-    private String address_depth3;
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String depth3;
 
 
 

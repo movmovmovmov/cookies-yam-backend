@@ -13,7 +13,9 @@ jar {
 
 group = 'com.cookies'
 version = '0.0.1-SNAPSHOT'
+/*
 sourceCompatibility = '11'
+ */
 
 
 configurations {
@@ -45,8 +47,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	/* LOCAL TEST DATABASE */
-	testImplementation 'com.h2database:h2'
-	implementation 'com.h2database:h2'
+	//testImplementation 'com.h2database:h2'
+	//implementation 'com.h2database:h2'
 	/* LOCAL TEST DATABASE END*/
 }
 

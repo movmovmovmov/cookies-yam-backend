@@ -60,12 +60,12 @@ public class UserService {
 
     /* 회원정보(비밀번호) 수정 */
     @Transactional
-    public void modify(UserDto.Request dto) {
-        User user = userRepository.findByUsername(dto.toEntity().getUsername()).orElseThrow(() ->
+    public void modify(String username, String password) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         //String encPassword = encoder.encode(dto.getPassword());
-        String password = dto.getPassword();
+
         user.modify(password);
     }
 
@@ -73,20 +73,47 @@ public class UserService {
     public void addressModify(String username, Long addressId){
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-        Address address = entityManager.find(Address.class, addressId);
 
-        Long address_id = dto.getAddress_id();
-        user.addressModify(address_id);
+        user.addressModify(addressId);
     }
 
     /* 회원 닉네임 변경 */
-    public void nicknameModify(UserDto.Request dto) {
-        User user = userRepository.findByUsername(dto.toEntity().getUsername()).orElseThrow(() ->
+    public void nicknameModify(String username, String nickname) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-        String nickname = dto.getNickname();
         user.nicknameModify(nickname);
     }
 
+    @Transactional
+    public void category1Modify(String username, Long category1) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        user.category1Modify(category1);
+    }
+    @Transactional
+    public void category2Modify(String username, Long category2) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        user.category2Modify(category2);
+    }
+    @Transactional
+    public void category3Modify(String username, Long category3) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        user.category3Modify(category3);
+    }
+    @Transactional
+    public void category4Modify(String username, Long category4) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        user.category4Modify(category4);
+    }
+    @Transactional
+    public void category5Modify(String username, Long category5) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        user.category5Modify(category5);
+    }
 
     @Transactional
     public Optional<User> findByUsername(String username) {
@@ -94,6 +121,7 @@ public class UserService {
 
         return user;
     }
+
 
     @Transactional
     public User findById(int id) {

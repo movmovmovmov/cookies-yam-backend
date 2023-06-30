@@ -27,7 +27,7 @@ public class RestHandlerInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         logger.info("preHandle Process URI: " + uri);
 
-        if ("/api/vi/auth/joinProc".equals(uri) || "/api/vi/auth/join/check".equals(uri) || "/api/vi/user/detail".equals(uri)) {
+        if (false) {
             String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
             logger.info("requestBody value TEST: " + requestBody);

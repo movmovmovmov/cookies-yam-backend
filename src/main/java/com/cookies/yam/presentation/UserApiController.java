@@ -52,10 +52,11 @@ public class UserApiController {
     /* ID 중복 체크 */
     @Async
     @PostMapping("/auth/join/check")
-    public String checkUserName(UserDto.Request dto) {
+    public String checkUserName(@RequestBody User request) {
+        String username = request.getUsername();
         logger.info("CHECK /auth/join/check controller :  ");
 
-        boolean result = userService.existsByUsername(dto.getUsername());
+        boolean result = userService.existsByUsername(username);
 
         if (result) {
             return "already used";
@@ -83,32 +84,49 @@ public class UserApiController {
 
     /* 회원정보(비밀번호) 수정 */
     @PostMapping("/user/modify")
-    public void modify(UserDto.Request dto) {
-        userService.modify(dto);
+    public void modify(@RequestBody User request) {
+        String username = request.getUsername();
+        String password = request.getPassword();
+        userService.modify(username, password);
     }
 
     /* 회원 선호 카테고리 수정 */
-    @PostMapping("/user/category/modify")
-    public void categoryModify(UserDto.Request dto){
-
+    @PostMapping("/user/category1/modify")
+    public void category1Modify(@RequestBody User request){
+        String username = request.getUsername();
+        Long category1_id = request.getCategory1_id();
+        userService.category1Modify(username, category1_id);
+    }
+    @PostMapping("/user/category2/modify")
+    public void category2Modify(@RequestBody User request){
+        String username = request.getUsername();
+        Long category2_id = request.getCategory2_id();
+        userService.category2Modify(username, category2_id);
     }
 
     /* 회원 동네 수정(입력) */
     @PostMapping("/user/address/modify")
-    public void addressModify(UserDto.Request dto){
-        userService.addressModify(dto);
+    public void addressModify(@RequestBody User request){
+        Long address_id = request.getAddress_id();
+        String username = request.getUsername();
+        userService.addressModify(username, address_id);
     }
 
     /* 회원 닉네임 수정 */
     @PostMapping("/user/nickname/modify")
-    public void nicknameModify(UserDto.Request dto){
-        userService.nicknameModify(dto);
+    public void nicknameModify(@RequestBody User request){
+        String username = request.getUsername();
+        String nickname = request.getNickname();
+        userService.nicknameModify(username, nickname);
     }
 
     /* 단순 회원정보 조회(username, 아이디) */
     @PostMapping("/user/detail")
-    public User info(UserDto.Request dto) {
-        Optional<User> checkUser = userService.findByUsername(dto.getUsername());
+    public User info(@RequestBody User request) {
+        logger.info("CHECK /user/detail controller :  ");
+        logger.info("CHECK User :  " + request);
+        String username = request.getUsername();
+        Optional<User> checkUser = userService.findByUsername(username);
 
         User user = checkUser.orElseGet(User::new);
 

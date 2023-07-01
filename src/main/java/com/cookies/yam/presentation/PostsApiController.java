@@ -33,10 +33,11 @@ public class PostsApiController {
     private final UserService userService;
     /* CREATE */
     @PostMapping("/posts/save")
-    public ResponseEntity save(@RequestParam("file") MultipartFile file, @RequestBody PostsDto.Request dto, UserDto.Response user) {
+    public ResponseEntity save(@RequestBody PostsDto.Request dto, UserDto.Response user) {
         String username = user.getUsername();
-        Long id = postsService.save( dto, username);
+
         /*
+        @RequestParam("file") MultipartFile file,
         if (!file.isEmpty()) {
             String fileName = FileUploadUtil.uploadFile(file);
 
@@ -47,7 +48,7 @@ public class PostsApiController {
             post.setFile(fileEntity);
         }*/
 
-        /*
+
         Optional<User> checkUser = userService.findByUsername(username);
         User u = checkUser.orElseGet(User::new);
         Long user_id = u.getId();
@@ -57,8 +58,8 @@ public class PostsApiController {
         int count = dto.getCount();
         Long category_id = dto.getCategory_id();
         Long address_id = dto.getAddress_id();
-        */
 
+        Long id = postsService.save( dto, username);
 
         return ResponseEntity.ok(id);
     }

@@ -49,12 +49,12 @@ public class PostsDto {
         /* Dto -> Entity */
         public Posts toEntity() {
             Posts posts = Posts.builder()
-                    .id(id)
+
                     .title(title)
                     .limit(limit)
                     .count(count)
                     .content(content)
-                    .view(0)
+
                     .user_id(user_id)
                     .category_id(category_id)
                     .address_id(address_id)

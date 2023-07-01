@@ -48,7 +48,7 @@ dependencies {
 
 	/* LOCAL TEST DATABASE */
 	//testImplementation 'com.h2database:h2'
-	//implementation 'com.h2database:h2'
+	implementation 'com.h2database:h2'
 	/* LOCAL TEST DATABASE END*/
 }
 

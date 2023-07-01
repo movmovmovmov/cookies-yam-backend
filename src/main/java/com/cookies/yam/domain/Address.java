@@ -35,6 +35,4 @@ public class Address extends BaseTimeEntity {
     private String depth3;
 
 
-
-
 }

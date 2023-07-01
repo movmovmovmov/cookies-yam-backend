@@ -9,11 +9,16 @@ import com.cookies.yam.interceptor.RestHandlerInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,6 +38,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vi")
 public class UserApiController {
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private static final Logger logger = LoggerFactory.getLogger(RestHandlerInterceptor.class);
 
     private final UserService userService;
@@ -52,30 +60,32 @@ public class UserApiController {
     /* ID 중복 체크 */
     @Async
     @PostMapping("/auth/join/check")
-    public String checkUserName(@RequestBody User request) {
+    public boolean checkUserName(@RequestBody User request) {
         String username = request.getUsername();
         logger.info("CHECK /auth/join/check controller :  ");
 
         boolean result = userService.existsByUsername(username);
-
-        if (result) {
-            return "already used";
-        } else {
-            return "null";
-        }
+        // True = 이미 있는 사용자, False = 없는 사용자
+        return result;
     }
 
     /* 로그인 (JWT) */
     @PostMapping("/auth/login")
-    public String login(@RequestParam(value = "error", required = false) String error,
-                        @RequestParam(value = "exception", required = false)String exception,
-                        Model model) {
-        model.addAttribute("error", error);
-        model.addAttribute("exception", exception);
-        return "/user/user-login";
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = userService.generateToken(authentication);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("status","success");
+        return ResponseEntity.ok(response);
     }
 
-    /* 로그아웃 (JWT) Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회 */
+    /* 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회 */
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -96,6 +106,7 @@ public class UserApiController {
         String username = request.getUsername();
         Long category1_id = request.getCategory1_id();
         userService.category1Modify(username, category1_id);
+
     }
     @PostMapping("/user/category2/modify")
     public void category2Modify(@RequestBody User request){

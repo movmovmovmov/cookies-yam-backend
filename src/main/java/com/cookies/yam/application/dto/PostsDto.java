@@ -18,9 +18,12 @@ public class PostsDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    @Getter
     public static class Request {
 
         private Long id;
+
+        private Long posts_id;
 
         private String title;
 
@@ -34,6 +37,7 @@ public class PostsDto {
 
         private int view;
 
+        private String username;
         private Long user_id;
 
         private Long category_id;
@@ -46,6 +50,7 @@ public class PostsDto {
 
         private String order;
 
+
         /* Dto -> Entity */
         public Posts toEntity() {
             Posts posts = Posts.builder()
@@ -54,7 +59,6 @@ public class PostsDto {
                     .limit(limit)
                     .count(count)
                     .content(content)
-
                     .user_id(user_id)
                     .category_id(category_id)
                     .address_id(address_id)
@@ -81,6 +85,7 @@ public class PostsDto {
         private final Long category_id;
 
         private final Long address_id;
+
         private final Long user_id;
         private final int limit;
         private final int count;

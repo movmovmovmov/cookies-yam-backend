@@ -13,8 +13,8 @@ import java.time.format.DateTimeFormatter;
     public class FileUploadUtil {
         private static final String UPLOAD_DIR = "uploads/";
 
-        public static String uploadFile(MultipartFile file) throws IOException {
-            String fileName = generateFileName(file.getOriginalFilename());
+        public static String uploadFile(MultipartFile file, Long posts_id) throws IOException {
+            String fileName = generateFileName(file.getOriginalFilename(), String.valueOf(posts_id));
             Path uploadPath = Path.of(UPLOAD_DIR);
 
             if (!Files.exists(uploadPath)) {
@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter;
             }
         }
 
-        private static String generateFileName(String originalFileName) {
+        private static String generateFileName(String originalFileName, String posts_id) {
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
             String extension = StringUtils.getFilenameExtension(originalFileName);

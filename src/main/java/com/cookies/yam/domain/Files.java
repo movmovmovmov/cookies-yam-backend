@@ -1,17 +1,16 @@
 package com.cookies.yam.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 @Entity
-public class File {
+public class Files extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +21,19 @@ public class File {
     @Column
     private String renamedFileName;
 
-    @Column(name = "post_ref")
-    private Long post_id;
+    @Column(name = "posts_ref")
+    private Long postsId;
 
 
 
-    public File(String originalFileName, String renamedFileName) {
+    public Files(String originalFileName, String renamedFileName, Long posts_id) {
         this.originalFileName = originalFileName;
         this.renamedFileName = renamedFileName;
+        this.postsId = postsId;
     }
 
-    // getters and setters
+
+
 }
 
 

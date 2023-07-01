@@ -24,11 +24,16 @@ public class PostsService {
 
     /* CREATE */
     @Transactional
-    public Long save(PostsDto.Request dto, String username) {
+    public Long save(String title, String content, int limit, int count, Long category_id, Long address_id, String username) {
         /* User 정보를 가져와 dto에 담아준다. */
+        PostsDto.Request dto = new PostsDto.Request();
         Optional<User> user = userRepository.findByUsername(username);
+        dto.setTitle(title);
+        dto.setContent(content);
+        dto.setLimit(limit);
+        dto.setCategory_id(category_id);
+        dto.setAddress_id(address_id);
         user.ifPresent(u -> dto.setUser_id(u.getId()));
-
         log.info("PostsService save() 실행");
         Posts posts = dto.toEntity();
         postsRepository.save(posts);
@@ -84,5 +89,6 @@ public class PostsService {
         Page<Posts> postsList = postsRepository.findByTitleContaining(keyword, pageable);
         return postsList;
     }
+
 }
 

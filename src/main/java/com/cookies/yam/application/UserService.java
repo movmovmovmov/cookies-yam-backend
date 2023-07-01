@@ -7,31 +7,67 @@ import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
-
+public class UserService implements UserDetailsService {
+    private static final String SECRET_KEY = "yamyampoten5"; // 비밀키
+    private static final long EXPIRATION_TIME = 3600000; //1시간
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     //private final BCryptPasswordEncoder encoder;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("Invalid username or password"));
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                new ArrayList<>()
+        );
+
+    }
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Map<String, Object> claims = new HashMap<>();
+        // 필요한 클레임 정보 추가
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .compact();
+    }
+    public Claims extractClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    }
 
     /* 회원가입 */
     @Transactional
     public void userJoin(UserDto.Request dto) {
-
-        //dto.setPassword(encoder.encode(dto.getPassword()));
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User user = userRepository.save(dto.toEntity());
         user.getUsername();
@@ -75,6 +111,7 @@ public class UserService {
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         user.addressModify(addressId);
+        userRepository.save(user);
     }
 
     /* 회원 닉네임 변경 */
@@ -82,6 +119,7 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.nicknameModify(nickname);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -89,30 +127,36 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category1Modify(category1);
+        userRepository.save(user);
+
     }
     @Transactional
     public void category2Modify(String username, Long category2) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category2Modify(category2);
+        userRepository.save(user);
     }
     @Transactional
     public void category3Modify(String username, Long category3) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category3Modify(category3);
+        userRepository.save(user);
     }
     @Transactional
     public void category4Modify(String username, Long category4) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category4Modify(category4);
+        userRepository.save(user);
     }
     @Transactional
     public void category5Modify(String username, Long category5) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category5Modify(category5);
+        userRepository.save(user);
     }
 
     @Transactional

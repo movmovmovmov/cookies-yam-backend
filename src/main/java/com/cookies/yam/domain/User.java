@@ -15,7 +15,7 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30, unique = true)
+    @Column
     private String username; // 아이디
 
     @Column
@@ -62,6 +62,7 @@ public class User extends BaseTimeEntity {
     public void nicknameModify(String nickname){
         this.nickname = nickname;
     }
+
 
     /* 회원 선호 카테고리 입력*/
     public void category1Modify(Long category1_id){

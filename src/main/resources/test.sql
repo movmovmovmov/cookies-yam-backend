@@ -1,0 +1,1 @@
+INSERT INTO USER (username, created_date, modified_date) VALUES('tester1', '2023.07.05 22:00', '2023.07.05 22:00')

@@ -2,10 +2,13 @@ package com.cookies.yam.presentation;
 
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
-import com.cookies.yam.application.validator.CustomValidators;
+
+import com.cookies.yam.config.JwtTokenProvider;
 import com.cookies.yam.domain.User;
-import com.cookies.yam.infrastructure.persistence.UserRepository;
+
 import com.cookies.yam.interceptor.RestHandlerInterceptor;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,22 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-
-
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -38,8 +30,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vi")
 public class UserApiController {
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
     @Autowired
-    private AuthenticationManager authenticationManager;
     private static final Logger logger = LoggerFactory.getLogger(RestHandlerInterceptor.class);
 
     private final UserService userService;
@@ -71,19 +64,24 @@ public class UserApiController {
 
     /* 로그인 (JWT) */
     @PostMapping("/auth/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public ResponseEntity<String> login(@RequestBody User request) {
 
-        String token = userService.generateToken(authentication);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-        response.put("status","success");
-        return ResponseEntity.ok(response);
+        if (request == null || userService.isPasswordMatching(request.getUsername(), request.getPassword()) == false) {
+            // 사용자가 존재하지 않거나 비밀번호가 일치하지 않는 경우,
+            // 로그인 실패 응답을 반환합니다.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패했습니다.");
+        } else {
+            Optional<User> userOptional = userService.findByUsername(request.getUsername());
+            User user = userOptional.orElseGet(User::new);
+
+            String token = generateJwtToken(user);
+
+            // 로그인 성공 응답을 반환합니다. 토큰을 함께 반환합니다.
+            return ResponseEntity.ok(token);
+        }
     }
+
 
     /* 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회 */
     @GetMapping("/logout")
@@ -101,13 +99,16 @@ public class UserApiController {
     }
 
     /* 회원 선호 카테고리 수정 */
+    @Async
     @PostMapping("/user/category1/modify")
     public void category1Modify(@RequestBody User request){
+
         String username = request.getUsername();
+
         Long category1_id = request.getCategory1_id();
         userService.category1Modify(username, category1_id);
-
     }
+    @Async
     @PostMapping("/user/category2/modify")
     public void category2Modify(@RequestBody User request){
         String username = request.getUsername();
@@ -134,8 +135,6 @@ public class UserApiController {
     /* 단순 회원정보 조회(username, 아이디) */
     @PostMapping("/user/detail")
     public User info(@RequestBody User request) {
-        logger.info("CHECK /user/detail controller :  ");
-        logger.info("CHECK User :  " + request);
         String username = request.getUsername();
         Optional<User> checkUser = userService.findByUsername(username);
 
@@ -160,4 +159,22 @@ public class UserApiController {
     /*}
 
     */
+private String generateJwtToken(User user) {
+    // JWT 토큰 생성 로직을 구현합니다.
+    // 필요한 정보를 토대로 JWT 토큰을 생성하고 반환합니다.
+
+    // 예시: HS256 알고리즘과 시크릿 키를 사용하여 토큰을 생성합니다.
+    String secretKey = "mySecretKey";
+    Date expirationDate = new Date(System.currentTimeMillis() + 86400000); // 토큰 만료 시간 설정 (예시: 24시간)
+
+    String token = Jwts.builder()
+            .setSubject(user.getUsername())
+            .setIssuedAt(new Date())
+            .setExpiration(expirationDate)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact();
+
+    return token;
+}
+
 }

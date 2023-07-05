@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -58,23 +56,20 @@ public class UserDto {
                     .category4_id(category4_id)
                     .category5_id(category5_id)
                     .build();
+            System.out.println("DTO-> Entity 테스트: "+user);
             return user;
         }
     }
 
-    /**
-     * 인증된 사용자 정보를 세션에 저장하기 위한 클래스
-     * 세션을 저장하기 위해 User 엔티티 클래스를 직접 사용하게 되면 직렬화를 해야 하는데,
-     * 엔티티 클래스에 직렬화를 넣어주면 추후에 다른 엔티티와 연관관계를 맺을시
-     * 직렬화 대상에 다른 엔티티까지 포함될 수 있어 성능 이슈 우려가 있기 때문에
-     * 세션 저장용 Dto 클래스 생성
-     * */
+
     @Getter
     public static class Response implements Serializable {
 
         private final Long id;
 
         private final String username;
+
+        private final String password;
 
         private final String nickname;
 
@@ -99,6 +94,7 @@ public class UserDto {
         public Response(User user) {
             this.id = user.getId();
             this.username = user.getUsername();
+            this.password = user.getPassword();
             this.nickname = user.getNickname();
             this.address_id = user.getAddress_id();
             this.category1_id = user.getCategory1_id();

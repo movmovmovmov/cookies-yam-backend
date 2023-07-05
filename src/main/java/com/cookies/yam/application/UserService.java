@@ -1,73 +1,38 @@
 package com.cookies.yam.application;
 
-import com.cookies.yam.application.dto.PostsDto;
-import com.cookies.yam.domain.Address;
-import com.cookies.yam.domain.Category;
-import com.cookies.yam.domain.Posts;
+
+import com.cookies.yam.config.JwtTokenProvider;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
+
 
 import java.util.*;
 
-@RequiredArgsConstructor
+
 @Service
-public class UserService implements UserDetailsService {
-    private static final String SECRET_KEY = "yamyampoten5"; // 비밀키
-    private static final long EXPIRATION_TIME = 3600000; //1시간
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+public class UserService  implements UserDetailsService {
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+
     private final UserRepository userRepository;
-
-    //private final BCryptPasswordEncoder encoder;
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("Invalid username or password"));
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                new ArrayList<>()
-        );
-
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
-    public String generateToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Map<String, Object> claims = new HashMap<>();
-        // 필요한 클레임 정보 추가
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .compact();
-    }
-    public Claims extractClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-    }
-
-    /* 회원가입 */
     @Transactional
     public void userJoin(UserDto.Request dto) {
-        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         User user = userRepository.save(dto.toEntity());
         user.getUsername();
@@ -82,25 +47,12 @@ public class UserService implements UserDetailsService {
     }
 
     /* 회원가입 시, 유효성 검사 및 중복 체크 */
-    @Transactional(readOnly = true)
-    public Map<String, String> validateHandling(Errors errors) {
-        Map<String, String> validatorResult = new HashMap<>();
-
-        /* 유효성 검사, 중복 검사에 실패한 필드 목록을 받음 */
-        for (FieldError error : errors.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-        return validatorResult;
-    }
-
     /* 회원정보(비밀번호) 수정 */
     @Transactional
     public void modify(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-        //String encPassword = encoder.encode(dto.getPassword());
 
         user.modify(password);
     }
@@ -124,6 +76,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void category1Modify(String username, Long category1) {
+        System.out.println("username: "+username);
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category1Modify(category1);
@@ -162,17 +115,38 @@ public class UserService implements UserDetailsService {
     @Transactional
     public Optional<User> findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-
+        System.out.println(user);
         return user;
     }
 
 
     @Transactional
-    public User findById(int id) {
+    public Optional<User> findById(Long id) {
 
-         User user = userRepository.findById(id);
+         Optional<User> user = userRepository.findById(id);
+
         return user;
     }
 
+    @Transactional
+    public boolean isPasswordMatching(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+        return false;
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
+        // User 객체를 UserDetails 객체로 변환하여 반환
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(Collections.emptyList()) // 사용자의 권한 정보를 설정하거나 필요에 따라 추가할 수 있습니다.
+                .build();
+    }
 }

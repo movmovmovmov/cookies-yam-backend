@@ -1,13 +1,9 @@
 package com.cookies.yam.application;
 
 
-import com.cookies.yam.config.JwtTokenProvider;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
-
-import lombok.RequiredArgsConstructor;
-
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,20 +12,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.*;
 
 
 @Service
 public class UserService  implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+        //this.jwtTokenProvider = jwtTokenProvider;
     }
     @Transactional
     public void userJoin(UserDto.Request dto) {
@@ -149,4 +144,10 @@ public class UserService  implements UserDetailsService {
                 .authorities(Collections.emptyList()) // 사용자의 권한 정보를 설정하거나 필요에 따라 추가할 수 있습니다.
                 .build();
     }
+
+
+
+
+
+
 }

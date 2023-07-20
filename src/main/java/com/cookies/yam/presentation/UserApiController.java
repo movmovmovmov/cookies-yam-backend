@@ -1,31 +1,27 @@
 package com.cookies.yam.presentation;
 
-import com.cookies.yam.application.JwtTokenService;
-import com.cookies.yam.application.UserDetailsServiceImpl;
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
 
 import com.cookies.yam.domain.User;
 
 import com.cookies.yam.interceptor.RestHandlerInterceptor;
+import com.cookies.yam.util.JwtTokenUtil;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.Date;
 import java.util.Optional;
+
+import static com.cookies.yam.util.JwtTokenUtil.generateToken;
 
 /**
  * 회원 관련 Controller
@@ -47,11 +43,11 @@ public class UserApiController {
 
     /* 회원가입 */
     @PostMapping("/auth/joinProc")
-    public void joinProc(UserDto.Request dto) {
+    public void joinProc(@RequestBody UserDto.Request dto) {
         logger.info("CHECK joinProc controller :  ");
         logger.info("CHECK dto.getUsername(): " + dto.getUsername());
-       // dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userService.userJoin(dto);
+
+        userService.join(dto);
     }
 
     /* ID 중복 체크 */
@@ -67,19 +63,19 @@ public class UserApiController {
     }
 
     // 로그인 (JWT)
-    /*
+
     @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = jwtTokenService.generateToken(user.getUsername());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody UserDto.Request dto) {
+        User user = userService.login(dto.getUsername(), dto.getPassword());
+        if (user != null) {
+            // JWT 토큰 생성 및 반환 로직 구현 (예: 토큰 생성 유틸 클래스 활용)
+            String jwtToken = JwtTokenUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(jwtToken);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
+        }
     }
-     */
+
     // 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회
     /*
     @GetMapping("/logout")

@@ -5,6 +5,8 @@ import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +20,28 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
 
     }
     @Transactional
-    public void userJoin(UserDto.Request dto) {
+    public void join(UserDto.Request dto) {
 
-        User user = userRepository.save(dto.toEntity());
-        user.getUsername();
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        userRepository.save(dto.toEntity());
+    }
+    @Transactional
+    public User login(String username, String password){
+        Optional<User> optUser = userRepository.findByUsername(username);
+        if(optUser.isPresent()){
+            User user = optUser.get();
+            if(passwordEncoder.matches(password, user.getPassword())){
+                return user;
+            }
+        }
+        return null;
     }
 
     /* 회원가입 시, 아이디 중복 체크*/
@@ -121,7 +135,7 @@ public class UserService {
     }
 
     //
-    /*
+
     @Transactional
     public boolean isPasswordMatching(String username, String password) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
@@ -131,7 +145,7 @@ public class UserService {
         }
         return false;
     }
-    */
+
      /*
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,9 +1,10 @@
 package com.cookies.yam.presentation;
 
+import com.cookies.yam.application.JwtTokenService;
+import com.cookies.yam.application.UserDetailsServiceImpl;
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.UserDto;
 
-import com.cookies.yam.config.JwtTokenProvider;
 import com.cookies.yam.domain.User;
 
 import com.cookies.yam.interceptor.RestHandlerInterceptor;
@@ -13,10 +14,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +34,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vi")
 public class UserApiController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    //private final PasswordEncoder passwordEncoder;
     @Autowired
     private static final Logger logger = LoggerFactory.getLogger(RestHandlerInterceptor.class);
 
@@ -47,6 +50,7 @@ public class UserApiController {
     public void joinProc(UserDto.Request dto) {
         logger.info("CHECK joinProc controller :  ");
         logger.info("CHECK dto.getUsername(): " + dto.getUsername());
+       // dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         userService.userJoin(dto);
     }
 
@@ -62,33 +66,28 @@ public class UserApiController {
         return result;
     }
 
-    /* 로그인 (JWT) */
+    // 로그인 (JWT)
+    /*
     @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody User request) {
+    public ResponseEntity<String> login(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+        );
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if (request == null || userService.isPasswordMatching(request.getUsername(), request.getPassword()) == false) {
-            // 사용자가 존재하지 않거나 비밀번호가 일치하지 않는 경우,
-            // 로그인 실패 응답을 반환합니다.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패했습니다.");
-        } else {
-            Optional<User> userOptional = userService.findByUsername(request.getUsername());
-            User user = userOptional.orElseGet(User::new);
-
-            String token = generateJwtToken(user);
-
-            // 로그인 성공 응답을 반환합니다. 토큰을 함께 반환합니다.
-            return ResponseEntity.ok(token);
-        }
+        String token = jwtTokenService.generateToken(user.getUsername());
+        return ResponseEntity.ok(token);
     }
-
-
-    /* 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회 */
+     */
+    // 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회
+    /*
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         return "redirect:/";
     }
+    */
 
     /* 회원정보(비밀번호) 수정 */
     @PostMapping("/user/modify")

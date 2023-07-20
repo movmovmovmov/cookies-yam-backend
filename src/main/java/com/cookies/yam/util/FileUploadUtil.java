@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +16,11 @@ import java.time.format.DateTimeFormatter;
 
         public static String uploadFile(MultipartFile file, Long posts_id) throws IOException {
             String fileName = generateFileName(file.getOriginalFilename(), String.valueOf(posts_id));
-            Path uploadPath = Path.of(UPLOAD_DIR);
+
+
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            /* JDK 오류 */
+            //Path uploadPath = Path.of(UPLOAD_DIR);
 
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);

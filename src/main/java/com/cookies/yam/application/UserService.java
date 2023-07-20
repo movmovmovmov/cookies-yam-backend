@@ -5,9 +5,6 @@ import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import com.cookies.yam.application.dto.UserDto;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +13,15 @@ import java.util.*;
 
 
 @Service
-public class UserService  implements UserDetailsService {
+
+public class UserService {
     private final PasswordEncoder passwordEncoder;
-    //private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        //this.jwtTokenProvider = jwtTokenProvider;
+
     }
     @Transactional
     public void userJoin(UserDto.Request dto) {
@@ -123,6 +120,8 @@ public class UserService  implements UserDetailsService {
         return user;
     }
 
+    //
+    /*
     @Transactional
     public boolean isPasswordMatching(String username, String password) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
@@ -132,6 +131,8 @@ public class UserService  implements UserDetailsService {
         }
         return false;
     }
+    */
+     /*
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -144,6 +145,8 @@ public class UserService  implements UserDetailsService {
                 .authorities(Collections.emptyList()) // 사용자의 권한 정보를 설정하거나 필요에 따라 추가할 수 있습니다.
                 .build();
     }
+
+      */
 
 
 

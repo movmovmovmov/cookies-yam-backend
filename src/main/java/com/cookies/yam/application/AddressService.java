@@ -1,6 +1,4 @@
 package com.cookies.yam.application;
-
-import com.cookies.yam.application.dto.UserDto;
 import com.cookies.yam.domain.Address;
 import com.cookies.yam.domain.Category;
 import com.cookies.yam.domain.User;

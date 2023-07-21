@@ -86,7 +86,7 @@ public class UserApiController {
     */
 
     /* 회원정보(비밀번호) 수정 */
-    @PostMapping("/user/modify")
+    @PostMapping("/auth/modify")
     public void modify(@RequestBody User request) {
         String username = request.getUsername();
         String password = request.getPassword();
@@ -95,21 +95,56 @@ public class UserApiController {
 
     /* 회원 선호 카테고리 수정 */
     @Async
-    @PostMapping("/user/category1/modify")
-    public void category1Modify(@RequestBody User request){
+    @PostMapping("/user/{category:\\\\d+}/modify")
+    public ResponseEntity<String> categoryModify(@PathVariable int category, @RequestBody UserDto.Request request) {
 
         String username = request.getUsername();
+        // 시큐리티
+        if (userService.existsByUsername(request.getUsername()) != true) {
+            switch (category) {
+                case 1 :
+                    if (request.getCategory1_id() != null) {
+                        Optional<User> afterUser = userService.category1Modify(username, request.getCategory1_id());
+                        if (afterUser.isPresent()) {
 
-        Long category1_id = request.getCategory1_id();
-        userService.category1Modify(username, category1_id);
+                            return ResponseEntity.ok();
+                        } else {
+
+                            return
+                        }
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
+                    }
+                case 2 :
+                    if (request.getCategory2_id() != null) {
+                        userService.category2Modify(username, request.getCategory2_id());
+                        Optional<User> modifyUser = userService.findByUsername(request.getUsername());
+                        return ResponseEntity.ok("수정 완료");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
+                    }
+
+                case 3 :
+                case 4 :
+                case 5 :
+
+
+                }
+            }
+
+
+            if (request.getCategory1_id() != null) {
+                userService.category1Modify(username, request.getCategory1_id());
+                Optional<User> modifyUser = userService.findByUsername(request.getUsername());
+                return ResponseEntity.ok("수정 완료");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("username is not found.");
+        }
     }
-    @Async
-    @PostMapping("/user/category2/modify")
-    public void category2Modify(@RequestBody User request){
-        String username = request.getUsername();
-        Long category2_id = request.getCategory2_id();
-        userService.category2Modify(username, category2_id);
-    }
+
 
     /* 회원 동네 수정(입력) */
     @PostMapping("/user/address/modify")

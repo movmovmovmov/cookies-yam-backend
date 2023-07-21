@@ -11,10 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
 
-    /* user GET */
-    User findByNickname(String nickname);
-    Optional<User> findById(Long id);
-
     /* 중복 검사> 중복인 경우 true, 중복되지 않은경우 false 리턴 */
     boolean existsByUsername(String username);
     boolean existsByNickname(String nickname);

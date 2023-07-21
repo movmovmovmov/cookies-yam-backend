@@ -12,7 +12,7 @@ jar {
 }
 
 group = 'com.cookies'
-version = '0.0.1-SNAPSHOT'
+version = ''
 
 //sourceCompatibility = '11'
 
@@ -50,8 +50,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	/* LOCAL TEST DATABASE */
-	testImplementation 'com.h2database:h2'
-	implementation 'com.h2database:h2'
+	//testImplementation 'com.h2database:h2'
+	//implementation 'com.h2database:h2'
 	/* LOCAL TEST DATABASE END*/
 }
 

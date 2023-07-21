@@ -81,47 +81,60 @@ public class UserService {
     }
 
     @Transactional
-    public void category1Modify(String username, Long category1) {
-        System.out.println("username: "+username);
+    public Optional<User> category1Modify(String username, Long category1) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category1Modify(category1);
         userRepository.save(user);
-
+        Optional<User> afterUser = userRepository.findByUsername(user.getUsername());
+        return afterUser;
     }
+
     @Transactional
-    public void category2Modify(String username, Long category2) {
+    public Optional<User> category2Modify(String username, Long category2) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category2Modify(category2);
         userRepository.save(user);
+        Optional<User> afterUser = userRepository.findByUsername(user.getUsername());
+        return afterUser;
     }
+
     @Transactional
-    public void category3Modify(String username, Long category3) {
+    public Optional<User> category3Modify(String username, Long category3) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.category3Modify(category3);
         userRepository.save(user);
+        Optional<User> afterUser = userRepository.findByUsername(user.getUsername());
+        return afterUser;
     }
+
     @Transactional
-    public void category4Modify(String username, Long category4) {
+    public Optional<User> category4Modify(String username, Long category4) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-        user.category4Modify(category4);
+        user.category1Modify(category4);
         userRepository.save(user);
+        Optional<User> afterUser = userRepository.findByUsername(user.getUsername());
+        return afterUser;
     }
+
     @Transactional
-    public void category5Modify(String username, Long category5) {
+    public Optional<User> category5Modify(String username, Long category5) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-        user.category5Modify(category5);
+        user.category1Modify(category5);
         userRepository.save(user);
+        Optional<User> afterUser = userRepository.findByUsername(user.getUsername());
+        return afterUser;
     }
+
 
     @Transactional
     public Optional<User> findByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        System.out.println(user);
+
         return user;
     }
 

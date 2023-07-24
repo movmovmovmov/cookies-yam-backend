@@ -2,6 +2,8 @@ package com.cookies.yam.infrastructure.persistence;
 
 import com.cookies.yam.domain.Address;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,11 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     List<Address> findById(int id);
 
+    Page<Address> findByDepth3Containing(String depth3, Pageable pageable);
+
+    List<Address> findByDepth2Containing(String depth2);
+
+    List<Address> findByDepth1Containing(String depth1);
 
 
 

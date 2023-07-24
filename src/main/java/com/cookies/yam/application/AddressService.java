@@ -5,6 +5,9 @@ import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.AddressRepository;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -31,12 +34,17 @@ public class AddressService {
     }
 
     @Transactional
-    public List<Address> findByDepth3(String depth3) {
+    public Page<Address> searchAddressByDepth3WithPaging(String depth3, Integer page, int size) {
+        Pageable addressPage = PageRequest.of(page,size);
+        return addressRepository.findByDepth3Containing(depth3, addressPage);
+    }
 
-        List<Address> address = addressRepository.findByDepth3(depth3);
-
+    @Transactional
+    public List<Address> findByDepth2Containing(String depth2) {
+        List<Address> address = addressRepository.findByDepth2Containing(depth2);
         return address;
     }
+
 
     @Transactional
     public List<Address> findAllList() {

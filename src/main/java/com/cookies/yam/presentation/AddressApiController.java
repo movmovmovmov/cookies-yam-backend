@@ -39,4 +39,13 @@ public class AddressApiController {
 
         return address;
     }
+
+    @PostMapping("/address/all")
+    public List<Address> All() {
+
+        List<Address> address = addressService.findAllList();
+
+        return address;
+    }
+
 }

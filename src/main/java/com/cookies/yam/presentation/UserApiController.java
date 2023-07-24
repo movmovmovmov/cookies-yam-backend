@@ -95,76 +95,85 @@ public class UserApiController {
 
     /* 회원 선호 카테고리 수정 */
     @Async
-    @PostMapping("/user/{category:\\\\d+}/modify")
-    public ResponseEntity<String> categoryModify(@PathVariable int category, @RequestBody UserDto.Request request) {
+    @PostMapping("/user/category1/modify")
+    public User category1Modify(@RequestBody UserDto.Request request) {
+
 
         String username = request.getUsername();
-        // 시큐리티
-        if (userService.existsByUsername(request.getUsername()) != true) {
-            switch (category) {
-                case 1 :
-                    if (request.getCategory1_id() != null) {
-                        Optional<User> afterUser = userService.category1Modify(username, request.getCategory1_id());
-                        if (afterUser.isPresent()) {
+         Optional<User> afterUser = userService.category1Modify(username, request.getCategory1_id());
 
-                            return ResponseEntity.ok();
-                        } else {
+        User response = afterUser.orElseGet(User::new);
+        return response;
+    }
 
-                            return
-                        }
-                    } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
-                    }
-                case 2 :
-                    if (request.getCategory2_id() != null) {
-                        userService.category2Modify(username, request.getCategory2_id());
-                        Optional<User> modifyUser = userService.findByUsername(request.getUsername());
-                        return ResponseEntity.ok("수정 완료");
-                    } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
-                    }
-
-                case 3 :
-                case 4 :
-                case 5 :
+    @Async
+    @PostMapping("/user/category2/modify")
+    public User category2Modify(@RequestBody UserDto.Request request) {
 
 
-                }
-            }
+        String username = request.getUsername();
+        Optional<User> afterUser = userService.category2Modify(username, request.getCategory2_id());
+
+        User response = afterUser.orElseGet(User::new);
+        return response;
+    }
+
+    @Async
+    @PostMapping("/user/category3/modify")
+    public User category3Modify(@RequestBody UserDto.Request request) {
 
 
-            if (request.getCategory1_id() != null) {
-                userService.category1Modify(username, request.getCategory1_id());
-                Optional<User> modifyUser = userService.findByUsername(request.getUsername());
-                return ResponseEntity.ok("수정 완료");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("category1_id is not found.");
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("username is not found.");
-        }
+        String username = request.getUsername();
+        Optional<User> afterUser = userService.category3Modify(username, request.getCategory3_id());
+
+        User response = afterUser.orElseGet(User::new);
+        return response;
+    }
+
+    @Async
+    @PostMapping("/user/category4/modify")
+    public User category4Modify(@RequestBody UserDto.Request request) {
+
+
+        String username = request.getUsername();
+        Optional<User> afterUser = userService.category4Modify(username, request.getCategory4_id());
+
+        User response = afterUser.orElseGet(User::new);
+        return response;
+    }
+
+    @Async
+    @PostMapping("/user/category5/modify")
+    public User category5Modify(@RequestBody UserDto.Request request) {
+        String username = request.getUsername();
+        Optional<User> afterUser = userService.category5Modify(username, request.getCategory5_id());
+
+        User response = afterUser.orElseGet(User::new);
+        return response;
     }
 
 
     /* 회원 동네 수정(입력) */
     @PostMapping("/user/address/modify")
-    public void addressModify(@RequestBody User request){
+    public User addressModify(@RequestBody UserDto.Request request){
         Long address_id = request.getAddress_id();
         String username = request.getUsername();
-        userService.addressModify(username, address_id);
+        User response = userService.addressModify(username, address_id);
+        return response;
     }
 
     /* 회원 닉네임 수정 */
     @PostMapping("/user/nickname/modify")
-    public void nicknameModify(@RequestBody User request){
+    public User nicknameModify(@RequestBody UserDto.Request request){
         String username = request.getUsername();
         String nickname = request.getNickname();
-        userService.nicknameModify(username, nickname);
+        User response = userService.nicknameModify(username, nickname);
+        return response;
     }
 
     /* 단순 회원정보 조회(username, 아이디) */
     @PostMapping("/user/detail")
-    public User info(@RequestBody User request) {
+    public User info(@RequestBody UserDto.Request request) {
         String username = request.getUsername();
         Optional<User> checkUser = userService.findByUsername(username);
 
@@ -173,22 +182,6 @@ public class UserApiController {
         return user;
     }
 
-
-/*
-    @PutMapping("/user")
-    public ResponseEntity<User> modify(@RequestBody UserDto.Request dto) {
-        //userService.modify(dto);
-
-        /* 변경된 세션 등록 */
-        /*Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        */
-       // return new ResponseEntity<>("success", HttpStatus.OK);
-    /*}
-
-    */
 private String generateJwtToken(User user) {
     // JWT 토큰 생성 로직을 구현합니다.
     // 필요한 정보를 토대로 JWT 토큰을 생성하고 반환합니다.

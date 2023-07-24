@@ -64,20 +64,22 @@ public class UserService {
     }
 
     /* 회원 동네 정보 입력 */
-    public void addressModify(String username, Long addressId){
+    public User addressModify(String username, Long addressId){
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
         user.addressModify(addressId);
-        userRepository.save(user);
+        User response = userRepository.save(user);
+        return response;
     }
 
     /* 회원 닉네임 변경 */
-    public void nicknameModify(String username, String nickname) {
+    public User nicknameModify(String username, String nickname) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
         user.nicknameModify(nickname);
-        userRepository.save(user);
+        User response = userRepository.save(user);
+        return response;
     }
 
     @Transactional

@@ -26,6 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/vi/user/category1/modify").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/user/category2/modify").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/user/address/modify").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/user/nickname/modify").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/user/detail").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/address/all/list").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
                 .anyRequest().authenticated() // 그 외의 요청은 인증 필요
                 .and()
                 .formLogin()

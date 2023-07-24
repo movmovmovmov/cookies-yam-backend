@@ -38,4 +38,12 @@ public class AddressService {
         return address;
     }
 
+    @Transactional
+    public List<Address> findAllList() {
+
+        List<Address> address = addressRepository.findAll();
+
+        return address;
+    }
+
 }

@@ -63,6 +63,7 @@ public class UserDto {
 
 
     @Getter
+    @Setter
     public static class Response implements Serializable {
 
         private final Long id;

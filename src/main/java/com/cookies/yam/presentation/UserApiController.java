@@ -19,6 +19,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.cookies.yam.util.JwtTokenUtil.generateToken;
@@ -36,18 +38,11 @@ public class UserApiController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
-    public String ConnectTest() {
-        return "test입니다.";
-    }
-
     /* 회원가입 */
     @PostMapping("/auth/joinProc")
-    public void joinProc(@RequestBody UserDto.Request dto) {
-        logger.info("CHECK joinProc controller :  ");
-        logger.info("CHECK dto.getUsername(): " + dto.getUsername());
-
-        userService.join(dto);
+    public User joinProc(@RequestBody UserDto.Request dto) {
+        User user = userService.join(dto);
+        return user;
     }
 
     /* ID 중복 체크 */
@@ -63,17 +58,31 @@ public class UserApiController {
     }
 
     // 로그인 (JWT)
-
     @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody UserDto.Request dto) {
-        User user = userService.login(dto.getUsername(), dto.getPassword());
-        if (user != null) {
-            // JWT 토큰 생성 및 반환 로직 구현 (예: 토큰 생성 유틸 클래스 활용)
-            String jwtToken = JwtTokenUtil.generateToken(user.getUsername());
-            return ResponseEntity.ok(jwtToken);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
-        }
+    public ResponseEntity<?> login(@RequestBody UserDto.Request dto) {
+        Map result = userService.login(dto.getUsername(), dto.getPassword());
+        Map<String, Object> response = new HashMap<>();
+
+
+            if (("Login Success").equals(result.get("status"))){
+                User user = (User) result.get("user");
+                // JWT 토큰 생성 및 반환 로직 구현 (예: 토큰 생성 유틸 클래스 활용)
+                String jwtToken = JwtTokenUtil.generateToken(user.getUsername());
+                response.put("user", user);
+                response.put("jwtToken", jwtToken);
+
+                return ResponseEntity.ok(response);
+            } else if (("Not Matches").equals(result.get("status"))) {
+
+                User user = (User) result.get("user");
+                response.put("user", user);
+                response.put("status", result.get("status") + " Password");
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No User or Invalid credentials!");
+            }
+
+
     }
 
     // 로그아웃 Security에서 로그아웃은 기본적으로 POST지만, GET으로 우회

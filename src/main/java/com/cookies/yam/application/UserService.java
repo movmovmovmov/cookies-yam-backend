@@ -27,21 +27,36 @@ public class UserService {
 
     }
     @Transactional
-    public void join(UserDto.Request dto) {
+    public User join(UserDto.Request dto) {
 
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-        userRepository.save(dto.toEntity());
+        User user = userRepository.save(dto.toEntity());
+        return user;
     }
+
     @Transactional
-    public User login(String username, String password){
+    public Map login(String username, String password){
         Optional<User> optUser = userRepository.findByUsername(username);
-        if(optUser.isPresent()){
+        Map result = new HashMap<>();
+        String status;
+        if(optUser.isPresent()) {
             User user = optUser.get();
             if(passwordEncoder.matches(password, user.getPassword())){
-                return user;
+                status = "Login Success";
+
+            } else {
+                status = "Not Matches";
             }
+            result.put("status", status);
+            result.put("user", user);
+
+        } else {
+            status = "No User";
+            result.put("status", status);
         }
-        return null;
+
+
+        return result;
     }
 
     /* 회원가입 시, 아이디 중복 체크*/

@@ -18,10 +18,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Page<Address> findByDepth3Containing(String depth3, Pageable pageable);
 
-    List<Address> findByDepth2Containing(String depth2);
-
-    List<Address> findByDepth1Containing(String depth1);
-
 
 
 }

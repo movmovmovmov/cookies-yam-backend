@@ -34,15 +34,11 @@ public class AddressService {
     }
 
     @Transactional
-    public Page<Address> searchAddressByDepth3WithPaging(String depth3, Integer page, int size) {
-        Pageable addressPage = PageRequest.of(page,size);
-        return addressRepository.findByDepth3Containing(depth3, addressPage);
-    }
+    public Page<Address> searchAddressByDepth3WithPaging(String depth3, int page, int size) {
 
-    @Transactional
-    public List<Address> findByDepth2Containing(String depth2) {
-        List<Address> address = addressRepository.findByDepth2Containing(depth2);
-        return address;
+        Pageable addressPage = PageRequest.of(page,size);
+
+        return addressRepository.findByDepth3Containing(depth3, addressPage);
     }
 
 

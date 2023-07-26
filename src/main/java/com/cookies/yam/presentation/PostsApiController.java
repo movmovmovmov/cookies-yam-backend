@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class PostsApiController {
     private final UserService userService;
     /* CREATE */
     @PostMapping("/posts/save")
-    public ResponseEntity save(@RequestBody PostsDto.Request dto) {
+    public ResponseEntity save(@RequestBody PostsDto.Request dto, @RequestBody MultipartFile file) {
         String username = dto.getUsername();
 
         /*

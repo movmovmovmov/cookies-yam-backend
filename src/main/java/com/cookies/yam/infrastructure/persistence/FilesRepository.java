@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface FilesRepository extends JpaRepository<Files, Long> {
-    Optional<Files> findByPostsId(Long postsId);
+
 }

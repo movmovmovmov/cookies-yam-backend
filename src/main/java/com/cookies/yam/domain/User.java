@@ -50,15 +50,16 @@ public class User extends BaseTimeEntity {
     @Column
     private String agree_loca_at;
 
+
     /*
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
 
 */
-
+/*
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Posts> posts = new ArrayList<>();
-
+*/
     /* 회원정보 수정 */
     public void modify(String password) {
         this.password = password;

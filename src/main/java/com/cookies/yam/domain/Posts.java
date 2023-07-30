@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 @Entity
 public class Posts extends BaseTimeEntity {
 
@@ -26,29 +27,41 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @ManyToOne
-    @JoinColumn(name="user_ref")
-    private User user;
-
     @Column(name = "limit_user")
     private int limit;
 
     @Column(name = "total_count")
     private int count;
 
-    @Column(name = "address_ref")
-    private Long address_id;
+    @ManyToOne
+    @JoinColumn(name="user_ref")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="address_ref")
+    private Address address;
+
+    /*
+    // Category FK 생성 오류
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_ref")
+    private Category category;
+
+    */
 
     @Column(name = "category_ref")
-    private Long category_id;
+    private Long category;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Participate> participate = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Files> files = new ArrayList<>();
+
     /*
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comment = new ArrayList<>();
-*/
+    */
 
 
 }

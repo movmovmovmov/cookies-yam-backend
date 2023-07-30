@@ -23,4 +23,5 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
     Optional<Posts> findById(Long id);
 
+
 }

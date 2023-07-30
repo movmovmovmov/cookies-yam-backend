@@ -2,7 +2,11 @@ package com.cookies.yam.application;
 
 import com.cookies.yam.application.dto.PostsDto;
 import com.cookies.yam.application.dto.UserDto;
+import com.cookies.yam.domain.Address;
+import com.cookies.yam.domain.Category;
 import com.cookies.yam.domain.Posts;
+import com.cookies.yam.infrastructure.persistence.AddressRepository;
+import com.cookies.yam.infrastructure.persistence.CategoryRepository;
 import com.cookies.yam.infrastructure.persistence.PostsRepository;
 import com.cookies.yam.domain.User;
 import com.cookies.yam.infrastructure.persistence.UserRepository;
@@ -21,22 +25,31 @@ import java.util.Optional;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+    private final CategoryRepository categoryRepository;
+    private final AddressRepository addressRepository;
     private final UserRepository userRepository;
 
     /* CREATE */
     @Transactional
-    public Long save(String title, String content, int limit, int count, Long category_id, Long address_id, String username) {
+    public Posts save(String title, String content, int limit, int count, Long category, Address address, String username) {
         /* User 정보를 가져와 dto에 담아준다. */
         PostsDto.Request dto = new PostsDto.Request();
         Optional<User> user = userRepository.findByUsername(username);
         dto.setTitle(title);
         dto.setContent(content);
         dto.setLimit(limit);
-        dto.setCategory_id(category_id);
-        dto.setAddress_id(address_id);
+
+        dto.setCategory(category);
+
+        if(address != null){
+
+            Optional<Address> optAddress = addressRepository.findById(address.getId());
+            Address findAddress = optAddress.orElseGet(Address::new);
+            dto.setAddress(findAddress);
+        }
 
 
-        log.info("PostsService save() 실행");
+
         Posts posts = dto.toEntity();
         /*
         user.ifPresent(u -> posts.setUser(u)
@@ -45,7 +58,7 @@ public class PostsService {
          */
         postsRepository.save(posts);
 
-        return posts.getId();
+        return posts;
     }
 
     /* READ 게시글 readOnly 속성으로 조회속도 개선 */

@@ -22,19 +22,14 @@ public class FilesService {
     private final FilesRepository filesRepository;
 
 
-    @Transactional
-    public Optional<Files> findByPostsId(Long postsId) {
 
-         Optional<Files> files = filesRepository.findByPostsId(postsId);
-        return files;
-    }
     @Transactional
-    public Long save(String originalFileName, String renamedFileName, Long posts_id ) {
+    public Long save(String originalFileName, String renamedFileName, Posts post) {
 
         FilesDto.Request dto = new FilesDto.Request();
         dto.setOriginalFileName(originalFileName);
         dto.setRenamedFileName(renamedFileName);
-        dto.setPostsId(posts_id);
+        dto.setPost(post);
         Files files = dto.toEntity();
         filesRepository.save(files);
 

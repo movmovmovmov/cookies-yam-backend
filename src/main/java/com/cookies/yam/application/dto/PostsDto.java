@@ -1,8 +1,6 @@
 package com.cookies.yam.application.dto;
 
-import com.cookies.yam.domain.Participate;
-import com.cookies.yam.domain.Posts;
-import com.cookies.yam.domain.User;
+import com.cookies.yam.domain.*;
 import lombok.*;
 
 import java.util.List;
@@ -40,11 +38,11 @@ public class PostsDto {
 
         private String username;
 
-        private UserDto.Request user;
+        private User user;
 
-        private Long category_id;
+        private Long category;
 
-        private Long address_id;
+        private Address address;
 
         private String searchValue;
 
@@ -52,27 +50,28 @@ public class PostsDto {
 
         private String order;
 
-        private List<ParticipateDto.Request> participate;
+        private List<Participate> participate;
 
+        private List<Files> files;
 
         /* Dto -> Entity */
         public Posts toEntity() {
-            User userEntity = user.toEntity();
+
+
             Posts posts = Posts.builder()
                     .title(title)
                     .limit(limit)
                     .count(count)
                     .content(content)
-                    .category_id(category_id)
-                    .address_id(address_id)
-                    .user(userEntity)
+                    .category(category)
                     .build();
-/*
+
             if (this.participate != null) {
-                List<Participate> participateEntities = this.participate.stream()
-                        .map(participantDTO -> participantDTO.toEntity())
-                        .collect(Collectors.toList());
-                posts.setParticipate(participateEntities);
+                posts.setParticipate(participate);
+            }
+
+            if (this.address != null) {
+                posts.setAddress(address);
             }
 
 
@@ -80,7 +79,11 @@ public class PostsDto {
 
                 posts.setUser(user);
             }
-*/
+
+            if(this.files != null){
+
+                posts.setFiles(files);
+            }
 
             return posts;
         }
@@ -100,12 +103,14 @@ public class PostsDto {
         private final String content;
         private final String createdDate, modifiedDate;
         private final int view;
-        private final Long category_id;
-        private final Long address_id;
+        private final Long category;
+        private final Address address;
         private final User user;
         private final int limit;
         private final int count;
-        //private final List<Participate> participate;
+
+        private final List<Files> files;
+        private final List<Participate> participate;
 
         /* Entity -> Dto*/
         public Response(Posts posts) {
@@ -117,10 +122,11 @@ public class PostsDto {
             this.view = posts.getView();
             this.count = posts.getCount();
             this.limit = posts.getLimit();
-            this.address_id = posts.getAddress_id();
-            this.category_id = posts.getCategory_id();
+            this.address = posts.getAddress();
+            this.category = posts.getCategory();
             this.user = posts.getUser();
-            //this.participate = posts.getParticipate();
+            this.files = posts.getFiles();
+            this.participate = posts.getParticipate();
 
         }
     }

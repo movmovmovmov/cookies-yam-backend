@@ -18,20 +18,22 @@ import static com.cookies.yam.util.FileUploadUtil.uploadFile;
 @RestController
 public class FilesApiController {
     private final FilesService filesService;
-
+/*
     @PostMapping("/image/upload")
     public void save(@RequestPart("file") MultipartFile file, @RequestPart("posts_id") Long postsId) {
         try {
             String newFilename = uploadFile(file, postsId);
 
             filesService.save(file.getOriginalFilename(), newFilename, postsId);
+
         } catch (IOException e) {
-            /* 로그 찍을까 말까..*/
+
             throw new RuntimeException(e);
         }
 
-
+*
     }
+    /*
     @PostMapping("/image/path")
     public void loader(@RequestPart("posts_id") Long postsId) {
 
@@ -47,4 +49,6 @@ public class FilesApiController {
 
 
     }
+
+     */
 }

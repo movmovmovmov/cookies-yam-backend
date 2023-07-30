@@ -21,15 +21,17 @@ public class Files extends BaseTimeEntity {
     @Column
     private String renamedFileName;
 
-    @Column(name = "posts_ref")
-    private Long postsId;
+
+    @ManyToOne
+    @JoinColumn(name="posts_ref")
+    private Posts post;
 
 
 
-    public Files(String originalFileName, String renamedFileName, Long posts_id) {
+    public Files(String originalFileName, String renamedFileName, Posts post) {
         this.originalFileName = originalFileName;
         this.renamedFileName = renamedFileName;
-        this.postsId = postsId;
+        this.post = post;
     }
 
 

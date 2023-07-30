@@ -1,6 +1,7 @@
 package com.cookies.yam.application.dto;
 
 import com.cookies.yam.domain.Files;
+import com.cookies.yam.domain.Posts;
 import lombok.*;
 
 /**
@@ -22,7 +23,7 @@ public class FilesDto {
 
         private String renamedFileName;
 
-        private Long postsId;
+        private Posts post;
 
 
 
@@ -32,7 +33,7 @@ public class FilesDto {
                     .id(id)
                     .originalFileName(originalFileName)
                     .renamedFileName(renamedFileName)
-                    .postsId(postsId)
+                    .post(post)
                     .build();
             return files;
         }
@@ -49,7 +50,7 @@ public class FilesDto {
         private final Long id;
         private final String originalFileName;
         private final String renamedFileName;
-        private final Long postsId;
+        private final Posts post;
 
 
 
@@ -58,7 +59,7 @@ public class FilesDto {
             this.id = files.getId();
             this.originalFileName = files.getOriginalFileName();
             this.renamedFileName = files.getRenamedFileName();
-            this.postsId = files.getPostsId();
+            this.post = files.getPost();
 
 
         }

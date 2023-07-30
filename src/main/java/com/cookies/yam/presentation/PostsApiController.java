@@ -5,9 +5,7 @@ import com.cookies.yam.application.FilesService;
 import com.cookies.yam.application.PostsService;
 import com.cookies.yam.application.UserService;
 import com.cookies.yam.application.dto.PostsDto;
-import com.cookies.yam.domain.Files;
-import com.cookies.yam.domain.Posts;
-import com.cookies.yam.domain.User;
+import com.cookies.yam.domain.*;
 import com.cookies.yam.util.FileUploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,22 +47,35 @@ public class PostsApiController {
         String content = dto.getContent();
         int limit = dto.getLimit();
         int count = dto.getCount();
-        Long category_id = dto.getCategory_id();
-        Long address_id = dto.getAddress_id();
+        Long category = dto.getCategory();
 
-        Long posts_id = postsService.save( title, content, limit, count, category_id, address_id, username);
+        Address address = dto.getAddress();
+
+        Posts post = postsService.save( title, content, limit, count, category, address, username);
 
 
         if (!file.isEmpty()) {
-            String fileName = FileUploadUtil.uploadFile(file, posts_id);
+            String fileName = FileUploadUtil.uploadFile(file, post.getId());
 
             Files fileEntity = new Files();
             fileEntity.setOriginalFileName(file.getOriginalFilename());
             fileEntity.setRenamedFileName(fileName);
 
-            filesService.save(file.getOriginalFilename(),fileName,posts_id);
+            filesService.save(file.getOriginalFilename(),fileName, post);
         }
-        return ResponseEntity.ok(posts_id);
+        return ResponseEntity.ok(post);
+    }
+
+    // READ
+    @GetMapping("/posts/detail")
+    public ResponseEntity read(@RequestParam(defaultValue="0") long id){
+        System.out.println("테스트1: ");
+        Optional<Posts> optPost = postsService.Read(id);
+        Posts post = optPost.orElseGet(Posts::new);
+        System.out.println("test haza: "+post);
+
+
+        return ResponseEntity.ok(post);
     }
 
     /*
@@ -112,15 +123,5 @@ public class PostsApiController {
         return postsService.search(keyword, pageable);
     }
 
-    // READ
-    @GetMapping("/posts/detail")
-    public ResponseEntity read(@RequestParam(defaultValue="0") long id){
-        System.out.println("테스트1: ");
-        Optional<Posts> post = postsService.Read(id);
 
-        System.out.println("test haza: "+post);
-
-
-        return ResponseEntity.ok(post);
-    }
 }

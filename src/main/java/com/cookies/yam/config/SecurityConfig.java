@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/vi/auth/login").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
                 .antMatchers("/api/vi/user/detail").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
                 .antMatchers("/api/vi/address/list").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
+                .antMatchers("/api/vi/posts/detail").permitAll() // 시큐리티 적용하지 않을 요청 경로 설정
                 .anyRequest().authenticated() // 그 외의 요청은 인증 필요
                 .and()
                 .formLogin()

@@ -3,6 +3,7 @@ package com.cookies.yam.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,8 +26,9 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @Column(name = "user_ref")
-    private Long user_id;
+    @ManyToOne
+    @JoinColumn(name="user_ref")
+    private User user;
 
     @Column(name = "limit_user")
     private int limit;
@@ -40,19 +42,13 @@ public class Posts extends BaseTimeEntity {
     @Column(name = "category_ref")
     private Long category_id;
 
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Participate> participate = new ArrayList<>();
 
     /*
-    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @OrderBy("id asc") // 댓글 정렬
-    private List<Comment> comments;
-    */
-    /* 게시글 수정 */
-
-    public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comment = new ArrayList<>();
+*/
 
 
 }

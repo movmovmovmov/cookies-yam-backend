@@ -29,7 +29,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/vi")
 public class AddressApiController {
-    private static final Logger logger = LoggerFactory.getLogger(RestHandlerInterceptor.class);
+    //private static final Logger logger = LoggerFactory.getLogger(RestHandlerInterceptor.class);
 
     private final AddressService addressService;
 

@@ -1,5 +1,6 @@
 package com.cookies.yam.application.dto;
 
+import com.cookies.yam.domain.Participate;
 import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
 import lombok.*;
@@ -38,7 +39,8 @@ public class PostsDto {
         private int view;
 
         private String username;
-        private Long user_id;
+
+        private UserDto.Request user;
 
         private Long category_id;
 
@@ -50,19 +52,35 @@ public class PostsDto {
 
         private String order;
 
+        private List<ParticipateDto.Request> participate;
+
 
         /* Dto -> Entity */
         public Posts toEntity() {
+            User userEntity = user.toEntity();
             Posts posts = Posts.builder()
-
                     .title(title)
                     .limit(limit)
                     .count(count)
                     .content(content)
-                    .user_id(user_id)
                     .category_id(category_id)
                     .address_id(address_id)
+                    .user(userEntity)
                     .build();
+/*
+            if (this.participate != null) {
+                List<Participate> participateEntities = this.participate.stream()
+                        .map(participantDTO -> participantDTO.toEntity())
+                        .collect(Collectors.toList());
+                posts.setParticipate(participateEntities);
+            }
+
+
+            if(this.user != null){
+
+                posts.setUser(user);
+            }
+*/
 
             return posts;
         }
@@ -75,20 +93,19 @@ public class PostsDto {
      */
 
     @Getter
+
     public static class Response {
         private final Long id;
         private final String title;
         private final String content;
         private final String createdDate, modifiedDate;
         private final int view;
-
         private final Long category_id;
-
         private final Long address_id;
-
-        private final Long user_id;
+        private final User user;
         private final int limit;
         private final int count;
+        //private final List<Participate> participate;
 
         /* Entity -> Dto*/
         public Response(Posts posts) {
@@ -102,8 +119,9 @@ public class PostsDto {
             this.limit = posts.getLimit();
             this.address_id = posts.getAddress_id();
             this.category_id = posts.getCategory_id();
-            this.user_id = posts.getUser_id();
-            //this.comments = posts.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList());
+            this.user = posts.getUser();
+            //this.participate = posts.getParticipate();
+
         }
     }
 }

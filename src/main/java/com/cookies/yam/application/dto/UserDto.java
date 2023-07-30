@@ -42,6 +42,7 @@ public class UserDto {
 
         private Long category5_id;
 
+
         /* DTO -> Entity */
         public User toEntity() {
             User user = User.builder()
@@ -56,7 +57,7 @@ public class UserDto {
                     .category4_id(category4_id)
                     .category5_id(category5_id)
                     .build();
-            System.out.println("DTO-> Entity 테스트: "+user);
+
             return user;
         }
     }
@@ -73,8 +74,6 @@ public class UserDto {
         private final String password;
 
         private final String nickname;
-
-        //private final String email;
 
         private final String modifiedDate;
 

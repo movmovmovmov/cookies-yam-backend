@@ -69,10 +69,10 @@ public class PostsApiController {
     // READ
     @GetMapping("/posts/detail")
     public ResponseEntity read(@RequestParam(defaultValue="0") long id){
-        System.out.println("테스트1: ");
+
         Optional<Posts> optPost = postsService.Read(id);
         Posts post = optPost.orElseGet(Posts::new);
-        System.out.println("test haza: "+post);
+
 
 
         return ResponseEntity.ok(post);

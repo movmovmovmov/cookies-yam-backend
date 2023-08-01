@@ -1,11 +1,13 @@
 package com.cookies.yam.application.dto;
 
+import com.cookies.yam.application.PostsService;
 import com.cookies.yam.domain.Participate;
 import com.cookies.yam.domain.Posts;
 import com.cookies.yam.domain.User;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -13,8 +15,7 @@ import java.util.stream.Collectors;
  */
 public class ParticipateDto {
 
-
-    /** 게시글의 회원 참여와 상태를 처리할 요청(Request) 클래스 */
+    /** 게시글의 등록과 수정을 처리할 요청(Request) 클래스 */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -24,9 +25,9 @@ public class ParticipateDto {
 
         private Long id;
 
-        private PostsDto.Request post;
+        private Posts post;
 
-        private UserDto.Request user;
+        private User user;
 
         private String status;
 
@@ -36,15 +37,12 @@ public class ParticipateDto {
             Participate participate = Participate.builder()
                     .status(status)
                     .build();
-
                     if(user != null){
-                        User userEntity = user.toEntity();
-                        participate.setUser(userEntity);
+                        participate.setUser(user);
                     }
 
                     if(post != null){
-                        Posts postEntity = post.toEntity();
-                        participate.setPost(postEntity);
+                        participate.setPost(post);
                     }
 
 
@@ -54,7 +52,7 @@ public class ParticipateDto {
     }
 
     /**
-     * 게시글 참여 정보를 리턴할 응답(Response) 클래스
+     * 게시글 정보를 리턴할 응답(Response) 클래스
      * Entity 클래스를 생성자 파라미터로 받아 데이터를 Dto로 변환하여 응답
      * 별도의 전달 객체를 활용해 연관관계를 맺은 엔티티간의 무한참조를 방지
      */
@@ -65,7 +63,6 @@ public class ParticipateDto {
         private final Posts post;
         private final User user;
         private final String status;
-
 
         /* Entity -> Dto*/
         public Response(Participate participate) {

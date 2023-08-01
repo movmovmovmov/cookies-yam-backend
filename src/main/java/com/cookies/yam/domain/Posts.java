@@ -1,5 +1,7 @@
 package com.cookies.yam.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,7 +39,7 @@ public class Posts extends BaseTimeEntity {
     @JoinColumn(name="user_ref")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="address_ref")
     private Address address;
 
@@ -51,9 +53,12 @@ public class Posts extends BaseTimeEntity {
 
     @Column(name = "category_ref")
     private Long category;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    
+    // 직렬화 오류 해결 -> 역방향 참조 무시
+    @JsonManagedReference
+    @OneToMany(mappedBy = "post")
     private List<Participate> participate = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Files> files = new ArrayList<>();

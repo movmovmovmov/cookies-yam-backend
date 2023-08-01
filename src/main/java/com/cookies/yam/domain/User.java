@@ -1,5 +1,6 @@
 package com.cookies.yam.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,16 +51,12 @@ public class User extends BaseTimeEntity {
     @Column
     private String agree_loca_at;
 
+    // 직렬화 오류 해결 -> 역방향 참조 무시
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Participate> participate = new ArrayList<>();
 
-    /*
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> comment = new ArrayList<>();
 
-*/
-/*
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Posts> posts = new ArrayList<>();
-*/
     /* 회원정보 수정 */
     public void modify(String password) {
         this.password = password;

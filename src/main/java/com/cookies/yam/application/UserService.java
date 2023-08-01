@@ -73,6 +73,7 @@ public class UserService {
     public void modify(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+        UserDto userDto = new UserDto();
 
 
         user.modify(password);
